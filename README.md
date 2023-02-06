@@ -9,7 +9,7 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Ensure you have downloaded node.js on your machine
+Ensure you have downloaded node.js on your machine: https://nodejs.org/
 
 Recommended IDE is Visual Studio Code: https://code.visualstudio.com/
 
