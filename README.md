@@ -11,6 +11,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 Ensure you have downloaded node.js on your machine
 
+Recommended IDE is Visual Studio Code: https://code.visualstudio.com/
+
 In the project directory, you can run:
 
 ## `npm start`
