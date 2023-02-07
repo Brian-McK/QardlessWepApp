@@ -25,6 +25,7 @@ import Orders from "./Orders";
 import Overview from "./Overview";
 import Title from "./Title";
 import CreateCertificate from "./certificates/CreateCertificate";
+import ManageCertificate from "./certificates/ManageCertificate";
 
 function Copyright(props) {
   return (
@@ -166,9 +167,10 @@ function DashboardContent() {
           <Toolbar />
           {/* Main Content */}
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Title>Create Certificate</Title>
+            <Title>Manage Certificate</Title>
             {/* <Overview /> */}
-            <CreateCertificate />
+            {/* <CreateCertificate /> */}
+            <ManageCertificate />
             <Copyright sx={{ pt: 4 }} />
           </Container>
           {/* Main Content */}
