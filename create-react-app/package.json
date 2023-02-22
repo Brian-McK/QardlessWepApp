@@ -13,8 +13,11 @@
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.7",
+    "@reduxjs/toolkit": "^1.9.2",
+    "formik": "^2.2.9",
     "react": "latest",
     "react-dom": "latest",
+    "react-redux": "^8.0.5",
     "react-scripts": "latest",
     "recharts": "^2.3.2"
   },
