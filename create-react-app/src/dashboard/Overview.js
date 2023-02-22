@@ -5,8 +5,9 @@ import Paper from "@mui/material/Paper";
 
 export default function Overview() {
   return (
+    <>
+      <Title>Overview</Title>
       <Grid container spacing={3}>
-        {/* Overview */}
         <Grid item xs={12} md={6} lg={6}>
           <Paper
             sx={{
@@ -17,7 +18,6 @@ export default function Overview() {
             }}
           ></Paper>
         </Grid>
-        {/* Overview */}
         <Grid item xs={12} md={6} lg={6}>
           <Paper
             sx={{
@@ -28,7 +28,6 @@ export default function Overview() {
             }}
           ></Paper>
         </Grid>
-        {/* Overview */}
         <Grid item xs={12} md={6} lg={6}>
           <Paper
             sx={{
@@ -39,7 +38,6 @@ export default function Overview() {
             }}
           ></Paper>
         </Grid>
-        {/* Overview */}
         <Grid item xs={12} md={6} lg={6}>
           <Paper
             sx={{
@@ -51,5 +49,6 @@ export default function Overview() {
           ></Paper>
         </Grid>
       </Grid>
+    </>
   );
 }
