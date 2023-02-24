@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { useFormik, Form, Field } from "formik";
 import * as yup from "yup";
-import { TextField, Button, Stack } from "@mui/material";
+import { TextField, Button, Stack, Divider } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -16,6 +16,7 @@ const validationSchemaAddCourse = yup.object({
   courseTitle: yup
     .string("Enter course title")
     .required("Course title is required"),
+  startDate: yup.date().required("Date is required"),
 });
 
 export default function CourseForm() {
@@ -26,13 +27,13 @@ export default function CourseForm() {
     },
     validationSchema: validationSchemaAddCourse,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      alert(values.startDate.format("DD/MM/YYYY"));
     },
   });
 
   return (
     <>
-      <Grid container spacing={3}>
+      <Grid container spacing={2}>
         <Grid item xs={12} md={5} lg={5}>
           <Paper
             sx={{
@@ -47,6 +48,7 @@ export default function CourseForm() {
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <form onSubmit={formikAddCourse.handleSubmit}>
                   <TextField
+                    variant="filled"
                     fullWidth
                     id="courseTitle"
                     type="text"
@@ -65,14 +67,15 @@ export default function CourseForm() {
                   />
 
                   <DatePicker
-                    minDate={today}
+                    inputFormat="DD/MM/YYYY"
+                    label="Course Start Date"
                     views={["year", "month", "day"]}
                     value={formikAddCourse.values.startDate}
                     onChange={(value) =>
                       formikAddCourse.setFieldValue("startDate", value)
                     }
                     renderInput={(params) => (
-                      <TextField fullWidth {...params} />
+                      <TextField variant="filled" fullWidth {...params} />
                     )}
                   />
 
@@ -91,7 +94,14 @@ export default function CourseForm() {
           </Paper>
         </Grid>
         <Grid item xs={12} md={1} lg={1}>
-          <h3>Or</h3>
+          <Stack
+            spacing={2}
+            sx={{
+              alignItems: "center",
+            }}
+          >
+            <h3>Or</h3>
+          </Stack>
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
           <Paper
