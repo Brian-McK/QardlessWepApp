@@ -3,6 +3,7 @@ import Title from "../Title";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
+import CourseForm from "./CourseForm";
 
 export default function CreateCertificate() {
   return (
@@ -15,12 +16,10 @@ export default function CreateCertificate() {
               p: 2,
               display: "flex",
               flexDirection: "column",
-              height: 240,
+              height: 480,
             }}
           >
-            <Typography variant="h2" gutterBottom>
-              Create certificates View
-            </Typography>
+            <CourseForm />
           </Paper>
         </Grid>
       </Grid>
