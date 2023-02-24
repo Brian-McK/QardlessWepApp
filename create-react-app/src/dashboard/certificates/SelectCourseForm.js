@@ -30,8 +30,8 @@ export default function SelectCourseForm() {
 
   return (
     <>
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={6} lg={6}>
+      <Grid container spacing={2} >
+        <Grid item xs={12} md={12} lg={12} >
           <Paper
             sx={{
               p: 2,
