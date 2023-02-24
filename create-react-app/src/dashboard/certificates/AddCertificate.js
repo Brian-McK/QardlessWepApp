@@ -3,12 +3,12 @@ import Title from "../Title";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import CourseForm from "./CourseForm";
+import SelectCourseForm from "./SelectCourseForm";
 
-export default function CreateCertificate() {
+export default function AddCertificate() {
   return (
     <>
-      <Title>Create Certificate</Title>
+      <Title>Add Certificate</Title>
       <Grid container spacing={3}>
         <Grid item xs={12} md={12} lg={12}>
           <Paper
@@ -19,7 +19,7 @@ export default function CreateCertificate() {
               height: 480,
             }}
           >
-            <CourseForm />
+            <SelectCourseForm />
           </Paper>
         </Grid>
       </Grid>

@@ -24,8 +24,9 @@ import Deposits from "./Deposits";
 import Orders from "./Orders";
 import Overview from "./Overview";
 import Title from "./Title";
-import CreateCertificate from "./certificates/CreateCertificate";
+import AddCertificate from "./certificates/AddCertificate";
 import ManageCertificates from "./certificates/ManageCertificates";
+import AddCourse from "./courses/AddCourse";
 
 function Copyright(props) {
   return (
@@ -169,7 +170,8 @@ function DashboardContent() {
           {/* Main Content */}
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             {/* <Overview /> */}
-            <CreateCertificate />
+            <AddCertificate />
+            {/* <AddCourse /> */}
             {/* <ManageCertificate /> */}
             <Copyright sx={{ pt: 4 }} />
           </Container>
