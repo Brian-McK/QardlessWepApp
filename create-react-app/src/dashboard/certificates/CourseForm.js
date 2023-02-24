@@ -24,10 +24,11 @@ export default function CourseForm() {
     initialValues: {
       courseTitle: "",
       startDate: today,
+      expiryDate: today.add(1, 'year'),
     },
     validationSchema: validationSchemaAddCourse,
     onSubmit: (values) => {
-      alert(values.startDate.format("DD/MM/YYYY"));
+      alert(JSON.stringify(values, null, 2));
     },
   });
 
@@ -42,7 +43,7 @@ export default function CourseForm() {
               flexDirection: "column",
             }}
           >
-            <Stack spacing={2}>
+            <Stack>
               <h4>Add Course</h4>
               {/* Form Start */}
               <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -79,6 +80,19 @@ export default function CourseForm() {
                     )}
                   />
 
+                  <DatePicker
+                    inputFormat="DD/MM/YYYY"
+                    label="Course Expiry Date"
+                    views={["year", "month", "day"]}
+                    value={formikAddCourse.values.expiryDate}
+                    onChange={(value) =>
+                      formikAddCourse.setFieldValue("expiryDate", value)
+                    }
+                    renderInput={(params) => (
+                      <TextField variant="filled" fullWidth {...params} />
+                    )}
+                  />
+
                   <Button
                     color="primary"
                     variant="contained"
@@ -95,7 +109,6 @@ export default function CourseForm() {
         </Grid>
         <Grid item xs={12} md={1} lg={1}>
           <Stack
-            spacing={2}
             sx={{
               alignItems: "center",
             }}
