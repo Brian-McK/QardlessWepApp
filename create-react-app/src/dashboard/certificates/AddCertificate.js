@@ -4,6 +4,7 @@ import Grid from "@mui/material/Grid";
 import SelectCourseForm from "./SelectCourseForm";
 import CertificateDetailsForm from "./CertificateDetailsForm";
 import EndUserDetailsForm from "./EndUserDetailsForm";
+import UploadFileForm from "./UploadFileForm";
 
 export default function AddCertificate() {
   return (
@@ -20,7 +21,7 @@ export default function AddCertificate() {
           <EndUserDetailsForm />
         </Grid>
         <Grid item xs={12}>
-          <EndUserDetailsForm />
+          <UploadFileForm />
         </Grid>
       </Grid>
     </>
