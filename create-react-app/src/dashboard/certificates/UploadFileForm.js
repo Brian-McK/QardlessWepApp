@@ -2,7 +2,10 @@ import * as React from "react";
 import { useMemo, useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
+import { Chip, List, ListItem } from "@mui/material";
 import { useDropzone } from "react-dropzone";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import CloseIcon from "@mui/icons-material/Close";
 
 const baseStyle = {
   flex: 1,
@@ -51,11 +54,8 @@ export default function UploadFileForm() {
     maxFiles: 1,
     onFileDialogOpen: () => {
       setDisplayFeedback(false);
-      console.log("onFileDialogOpen");
     },
-    onDrop: () => {
-      console.log("file dropped");
-    },
+    onDrop: () => {},
     onDropAccepted: (acceptedFiles) => {
       setDisplayFeedback(true);
 
@@ -66,12 +66,10 @@ export default function UploadFileForm() {
           })
         )
       );
-      console.log("onDropAccepted", files);
     },
     onDropRejected: (fileRejections) => {
+      console.log(fileRejections);
       setDisplayFeedback(true);
-
-      console.log("onDropRejected", fileRejections);
     },
   });
 
@@ -91,21 +89,18 @@ export default function UploadFileForm() {
   );
 
   const acceptedFileItems = acceptedFiles.map((file) => (
-    <li key={file.path}>
-      {file.path} - {file.size} bytes
-    </li>
+    <Chip
+      color="success"
+      icon={<PictureAsPdfIcon />}
+      label={`${file.path} - ${file.size} bytes`}
+    />
   ));
 
-  const fileRejectionItems = fileRejections.map(({ file, errors }) => {
+  const fileRejectionItems = fileRejections.map(({ file, index }) => {
     return (
-      <li key={file.path}>
-        {file.path} - {file.size} bytes
-        <ul>
-          {errors.map((e) => (
-            <li key={e.code}>{e.message}</li>
-          ))}
-        </ul>
-      </li>
+      <ListItem key={file.path}>
+        <Chip color="danger" label={`${file.path} - ${file.size} bytes`} />
+      </ListItem>
     );
   });
 
@@ -134,14 +129,28 @@ export default function UploadFileForm() {
 
               {displayFeedback && (
                 <Grid container>
-                  <Grid item xs={12} md={6}>
-                    <h4>Accepted files</h4>
-                    <ul>{acceptedFileItems}</ul>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <h4>Rejected files</h4>
-                    <ul>{fileRejectionItems}</ul>
-                  </Grid>
+                  {acceptedFileItems.length > 0 && (
+                    <Grid item>
+                      <h4>Accepted file</h4>
+                      <ul>{acceptedFileItems}</ul>
+                    </Grid>
+                  )}
+
+                  {fileRejectionItems.length > 0 && (
+                    <Grid item>
+                      <h4>Rejected files</h4>
+                      <List
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          flexWrap: "wrap",
+                          listStyle: "none",
+                        }}
+                      >
+                        {fileRejectionItems}
+                      </List>
+                    </Grid>
+                  )}
                 </Grid>
               )}
             </Grid>
