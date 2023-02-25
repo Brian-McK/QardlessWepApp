@@ -10,13 +10,16 @@ export default function AddCertificate() {
     <>
       <Title>Add Certificate</Title>
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <SelectCourseForm />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <CertificateDetailsForm />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
+          <EndUserDetailsForm />
+        </Grid>
+        <Grid item xs={12}>
           <EndUserDetailsForm />
         </Grid>
       </Grid>
