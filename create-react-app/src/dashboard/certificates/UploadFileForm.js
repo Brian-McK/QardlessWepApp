@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { useDropzone } from "react-dropzone";
@@ -15,7 +15,7 @@ const baseStyle = {
   borderColor: "rgb(25, 118, 210, 0.5)",
   borderStyle: "dashed",
   backgroundColor: "#fafafa",
-  color: "grey",
+  color: "#696969",
   outline: "none",
   transition: "border .24s ease-in-out",
 };
@@ -33,8 +33,52 @@ const rejectStyle = {
 };
 
 export default function UploadFileForm() {
-  const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } =
-    useDropzone({ accept: { "application/pdf": [".pdf"] } });
+  const [files, setFiles] = useState([]);
+
+  const [displayFeedback, setDisplayFeedback] = useState(false);
+
+  const {
+    acceptedFiles,
+    fileRejections,
+    getRootProps,
+    getInputProps,
+    isFocused,
+    isDragAccept,
+    isDragReject,
+  } = useDropzone({
+    accept: { "application/pdf": [".pdf"] },
+    multiple: false,
+    maxFiles: 1,
+    onFileDialogOpen: () => {
+      setDisplayFeedback(false);
+      console.log("onFileDialogOpen");
+    },
+    onDrop: () => {
+      console.log("file dropped");
+    },
+    onDropAccepted: (acceptedFiles) => {
+      setDisplayFeedback(true);
+
+      setFiles(
+        acceptedFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        )
+      );
+      console.log("onDropAccepted", files);
+    },
+    onDropRejected: (fileRejections) => {
+      setDisplayFeedback(true);
+
+      console.log("onDropRejected", fileRejections);
+    },
+  });
+
+  useEffect(() => {
+    // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
+    return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
+  }, []);
 
   const style = useMemo(
     () => ({
@@ -45,6 +89,25 @@ export default function UploadFileForm() {
     }),
     [isFocused, isDragAccept, isDragReject]
   );
+
+  const acceptedFileItems = acceptedFiles.map((file) => (
+    <li key={file.path}>
+      {file.path} - {file.size} bytes
+    </li>
+  ));
+
+  const fileRejectionItems = fileRejections.map(({ file, errors }) => {
+    return (
+      <li key={file.path}>
+        {file.path} - {file.size} bytes
+        <ul>
+          {errors.map((e) => (
+            <li key={e.code}>{e.message}</li>
+          ))}
+        </ul>
+      </li>
+    );
+  });
 
   return (
     <>
@@ -60,14 +123,28 @@ export default function UploadFileForm() {
             <h4>Upload Certificate PDF</h4>
             {/* Form Start */}
 
-            <div className="container">
-              <div {...getRootProps({ style })}>
+            <Grid container>
+              <Grid item xs={12} {...getRootProps({ style })}>
                 <input {...getInputProps()} />
                 <p>
-                  Drag and drop certificate PDF here, or click to select file
+                  Drag and drop PDF certificates here, or click to select
+                  file...
                 </p>
-              </div>
-            </div>
+              </Grid>
+
+              {displayFeedback && (
+                <Grid container>
+                  <Grid item xs={12} md={6}>
+                    <h4>Accepted files</h4>
+                    <ul>{acceptedFileItems}</ul>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <h4>Rejected files</h4>
+                    <ul>{fileRejectionItems}</ul>
+                  </Grid>
+                </Grid>
+              )}
+            </Grid>
 
             {/* Form End */}
           </Paper>
