@@ -32,8 +32,8 @@ export default function AddCourse() {
   });
   return (
     <>
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={12} lg={12}>
+      <Grid container justifyContent={"center"} spacing={2}>
+        <Grid item sm={12} md={6} lg={6}>
           <Paper
             sx={{
               p: 2,
@@ -43,61 +43,64 @@ export default function AddCourse() {
           >
             <h4>Add Course</h4>
             {/* Form Start */}
+
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <form onSubmit={formikAddCourse.handleSubmit}>
-                <TextField
-                  variant="filled"
-                  fullWidth
-                  id="courseTitle"
-                  type="text"
-                  name="courseTitle"
-                  label="Course Title"
-                  value={formikAddCourse.values.courseTitle}
-                  onChange={formikAddCourse.handleChange}
-                  error={
-                    formikAddCourse.touched.courseTitle &&
-                    Boolean(formikAddCourse.errors.courseTitle)
-                  }
-                  helperText={
-                    formikAddCourse.touched.courseTitle &&
-                    formikAddCourse.errors.courseTitle
-                  }
-                />
+                <Stack spacing={2}>
+                  <TextField
+                    variant="filled"
+                    fullWidth
+                    id="courseTitle"
+                    type="text"
+                    name="courseTitle"
+                    label="Course Title"
+                    value={formikAddCourse.values.courseTitle}
+                    onChange={formikAddCourse.handleChange}
+                    error={
+                      formikAddCourse.touched.courseTitle &&
+                      Boolean(formikAddCourse.errors.courseTitle)
+                    }
+                    helperText={
+                      formikAddCourse.touched.courseTitle &&
+                      formikAddCourse.errors.courseTitle
+                    }
+                  />
 
-                <DatePicker
-                  inputFormat="DD/MM/YYYY"
-                  label="Course Start Date"
-                  views={["year", "month", "day"]}
-                  value={formikAddCourse.values.startDate}
-                  onChange={(value) =>
-                    formikAddCourse.setFieldValue("startDate", value)
-                  }
-                  renderInput={(params) => (
-                    <TextField variant="filled" fullWidth {...params} />
-                  )}
-                />
+                  <DatePicker
+                    inputFormat="DD/MM/YYYY"
+                    label="Course Start Date"
+                    views={["year", "month", "day"]}
+                    value={formikAddCourse.values.startDate}
+                    onChange={(value) =>
+                      formikAddCourse.setFieldValue("startDate", value)
+                    }
+                    renderInput={(params) => (
+                      <TextField variant="filled" fullWidth {...params} />
+                    )}
+                  />
 
-                <DatePicker
-                  inputFormat="DD/MM/YYYY"
-                  label="Course Expiry Date"
-                  views={["year", "month", "day"]}
-                  value={formikAddCourse.values.expiryDate}
-                  onChange={(value) =>
-                    formikAddCourse.setFieldValue("expiryDate", value)
-                  }
-                  renderInput={(params) => (
-                    <TextField variant="filled" fullWidth {...params} />
-                  )}
-                />
+                  <DatePicker
+                    inputFormat="DD/MM/YYYY"
+                    label="Course Expiry Date"
+                    views={["year", "month", "day"]}
+                    value={formikAddCourse.values.expiryDate}
+                    onChange={(value) =>
+                      formikAddCourse.setFieldValue("expiryDate", value)
+                    }
+                    renderInput={(params) => (
+                      <TextField variant="filled" fullWidth {...params} />
+                    )}
+                  />
 
-                <Button
-                  color="primary"
-                  variant="contained"
-                  fullWidth
-                  type="submit"
-                >
-                  Submit
-                </Button>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    fullWidth
+                    type="submit"
+                  >
+                    Submit
+                  </Button>
+                </Stack>
               </form>
             </LocalizationProvider>
             {/* Form End */}

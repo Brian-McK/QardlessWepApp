@@ -122,7 +122,7 @@ export default function UploadFileForm() {
               <Grid item xs={12} {...getRootProps({ style })}>
                 <input {...getInputProps()} />
                 <p>
-                  Drag and drop PDF certificates here, or click to select
+                  Drag and drop PDF certificate here, or click to select
                   file...
                 </p>
               </Grid>
