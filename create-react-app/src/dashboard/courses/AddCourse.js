@@ -33,7 +33,7 @@ export default function AddCourse() {
   return (
     <>
       <Grid container justifyContent={"center"} spacing={2}>
-        <Grid item sm={12} md={6} lg={6}>
+      <Grid item xs={10} sm={8} md={6}>
           <Paper
             sx={{
               p: 2,
