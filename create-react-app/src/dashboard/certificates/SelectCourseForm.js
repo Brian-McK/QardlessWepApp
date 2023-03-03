@@ -5,6 +5,8 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import { useFormikContext } from "formik";
+import { TextField } from "@mui/material";
 
 let dummyCourseItems = [
   {
@@ -22,16 +24,12 @@ let dummyCourseItems = [
 ];
 
 export default function SelectCourseForm() {
-  const [courseSelected, setCourseSelected] = React.useState("");
-
-  const courseHandleChange = (e) => {
-    setCourseSelected(e.target.value);
-  };
+  const { handleChange, values, errors, touched } = useFormikContext();
 
   return (
     <>
-      <Grid container spacing={2} >
-        <Grid item xs={12} md={12} lg={12} >
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={12} lg={12}>
           <Paper
             sx={{
               p: 2,
@@ -47,8 +45,12 @@ export default function SelectCourseForm() {
               <Select
                 labelId="select-course"
                 id="selectCourse"
-                value={courseSelected}
-                onChange={courseHandleChange}
+                value={values.selectCourse}
+                onChange={handleChange}
+                renderValue={(params) => (
+                  <TextField variant="filled" fullWidth {...params} />
+                )}
+                
               >
                 <MenuItem value="">
                   <em>None</em>

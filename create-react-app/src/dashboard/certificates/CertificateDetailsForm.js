@@ -1,30 +1,11 @@
 import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import { useFormik } from "formik";
-import * as yup from "yup";
-import { TextField, Button, Stack } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from "dayjs";
-
-const validationSchemaCertificateDetails = yup.object({
-  certNumber: yup
-    .string("Enter certificate number")
-    .required("Certificate number is required"),
-});
+import { TextField } from "@mui/material";
+import { useFormikContext } from "formik";
 
 export default function CertificateDetailsForm() {
-  const formikCertificateDetails = useFormik({
-    initialValues: {
-      certNumber: "",
-    },
-    validationSchema: validationSchemaCertificateDetails,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-    },
-  });
+  const { handleChange, values, errors, touched } = useFormikContext();
 
   return (
     <>
@@ -39,28 +20,18 @@ export default function CertificateDetailsForm() {
           >
             <h4>Certificate Details</h4>
             {/* Form Start */}
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <form onSubmit={formikCertificateDetails.handleSubmit}>
-                <TextField
-                  variant="filled"
-                  fullWidth
-                  id="certNumber"
-                  type="text"
-                  name="certNumber"
-                  label="Certificate Number"
-                  value={formikCertificateDetails.values.certNumber}
-                  onChange={formikCertificateDetails.handleChange}
-                  error={
-                    formikCertificateDetails.touched.certNumber &&
-                    Boolean(formikCertificateDetails.errors.certNumber)
-                  }
-                  helperText={
-                    formikCertificateDetails.touched.certNumber &&
-                    formikCertificateDetails.errors.certNumber
-                  }
-                />
-              </form>
-            </LocalizationProvider>
+            <TextField
+              variant="filled"
+              fullWidth
+              id="certNumber"
+              type="text"
+              name="certNumber"
+              label="Certificate Number"
+              value={values.certNumber}
+              onChange={handleChange}
+              error={touched.certNumber && Boolean(errors.certNumber)}
+              helperText={touched.certNumber && errors.certNumber}
+            />
 
             {/* Form End */}
           </Paper>
