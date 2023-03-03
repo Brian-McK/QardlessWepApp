@@ -7,10 +7,28 @@ import CertificateDetailsForm from "./CertificateDetailsForm";
 import EndUserDetailsForm from "./EndUserDetailsForm";
 import UploadFileForm from "./UploadFileForm";
 import * as yup from "yup";
-import { Formik, useFormikContext, useFormik, Form } from "formik";
+import { Formik, Form } from "formik";
+
+let dummyCourseItems = [
+  {
+    id: 1,
+    courseTitle: "Forklift training",
+  },
+  {
+    id: 2,
+    courseTitle: "Manuel handling",
+  },
+  {
+    id: 3,
+    courseTitle: "Food safety training",
+  },
+];
 
 const validationSchemaAddCertificate = yup.object({
-  selectCourse: yup.string("Select course").required("Course is required"),
+  selectCourse: yup
+    .string()
+    .required("Course is required")
+    .oneOf(dummyCourseItems),
   certNumber: yup
     .string("Enter certificate number")
     .required("Certificate number is required"),
@@ -19,12 +37,6 @@ const validationSchemaAddCertificate = yup.object({
 });
 
 export default function AddCertificate() {
-  // const { values, submitForm } = formikContext;
-
-  // React.useEffect(() => {
-  //   console.log(values);
-  // }, [values]);
-
   return (
     <>
       <Title>Add Certificate</Title>

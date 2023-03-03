@@ -6,7 +6,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { useFormikContext } from "formik";
-import { TextField } from "@mui/material";
+import { FormHelperText, TextField } from "@mui/material";
 
 let dummyCourseItems = [
   {
@@ -26,6 +26,8 @@ let dummyCourseItems = [
 export default function SelectCourseForm() {
   const { handleChange, values, errors, touched } = useFormikContext();
 
+  console.log(values);
+
   return (
     <>
       <Grid container spacing={2}>
@@ -41,16 +43,16 @@ export default function SelectCourseForm() {
             {/* Form Start */}
 
             <FormControl variant="filled" sx={{ minWidth: 120 }}>
-              <InputLabel id="select-course">Course Title</InputLabel>
-              <Select
-                labelId="select-course"
+              <TextField
+                select
+                variant="filled"
                 id="selectCourse"
+                name="selectCourse"
+                label="Select Course"
                 value={values.selectCourse}
                 onChange={handleChange}
-                renderValue={(params) => (
-                  <TextField variant="filled" fullWidth {...params} />
-                )}
-                
+                error={touched.selectCourse && Boolean(errors.selectCourse)}
+                helperText={touched.selectCourse && errors.selectCourse}
               >
                 <MenuItem value="">
                   <em>None</em>
@@ -58,12 +60,12 @@ export default function SelectCourseForm() {
 
                 {dummyCourseItems.map((item, index) => {
                   return (
-                    <MenuItem key={index} value={item.id}>
+                    <MenuItem key={index} value={item.courseTitle}>
                       {item.courseTitle}
                     </MenuItem>
                   );
                 })}
-              </Select>
+              </TextField>
             </FormControl>
 
             {/* Form End */}
