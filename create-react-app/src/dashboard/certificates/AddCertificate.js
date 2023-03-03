@@ -24,11 +24,12 @@ let dummyCourseItems = [
   },
 ];
 
+const courseTitles = dummyCourseItems.map(function (obj) {
+  return obj.courseTitle;
+});
+
 const validationSchemaAddCertificate = yup.object({
-  selectCourse: yup
-    .string()
-    .required("Course is required")
-    .oneOf(dummyCourseItems),
+  selectCourse: yup.string().required("Course is required").oneOf(courseTitles),
   certNumber: yup
     .string("Enter certificate number")
     .required("Certificate number is required"),
