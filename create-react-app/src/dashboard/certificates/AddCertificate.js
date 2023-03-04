@@ -8,6 +8,7 @@ import EndUserDetailsForm from "./EndUserDetailsForm";
 import UploadFileForm from "./UploadFileForm";
 import * as yup from "yup";
 import { Formik, Form } from "formik";
+import PreviewFile from "../../PreviewFile";
 
 let dummyCourseItems = [
   {
@@ -34,7 +35,7 @@ const validationSchemaAddCertificate = yup.object({
     .string("Enter certificate number")
     .required("Certificate number is required"),
   endUserEmail: yup.string().required().email(),
-  pdf: yup.mixed().required("File is required"),
+  pdf: yup.mixed().required("Pdf is required"),
 });
 
 export default function AddCertificate() {
@@ -63,7 +64,7 @@ export default function AddCertificate() {
                 <CertificateDetailsForm />
               </Grid>
               <Grid item xs={12} sm={6}>
-                {/* <UploadFileForm /> */}
+                <UploadFileForm />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <EndUserDetailsForm />
@@ -73,6 +74,8 @@ export default function AddCertificate() {
                 <Button color="primary" variant="contained" type="submit">
                   Submit
                 </Button>
+
+                {props.values && <p>{JSON.stringify(props.values)}</p>}
 
                 {props.errors && <p>{JSON.stringify(props.errors)}</p>}
               </Grid>

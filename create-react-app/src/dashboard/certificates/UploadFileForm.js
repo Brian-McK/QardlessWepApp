@@ -2,10 +2,10 @@ import * as React from "react";
 import { useMemo, useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import { Chip, List, ListItem } from "@mui/material";
+import { Chip, FormHelperText, List, ListItem, TextField } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import CloseIcon from "@mui/icons-material/Close";
+import { useFormikContext } from "formik";
 
 const baseStyle = {
   flex: 1,
@@ -36,6 +36,16 @@ const rejectStyle = {
 };
 
 export default function UploadFileForm() {
+  const {
+    handleChange,
+    values,
+    errors,
+    touched,
+    setFieldValue,
+    setFieldTouched,
+    setValues,
+  } = useFormikContext();
+
   const [files, setFiles] = useState([]);
 
   const [displayFeedback, setDisplayFeedback] = useState(false);
@@ -59,17 +69,18 @@ export default function UploadFileForm() {
     onDropAccepted: (acceptedFiles) => {
       setDisplayFeedback(true);
 
-      setFiles(
-        acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          })
-        )
+      const acceptedFileItems = acceptedFiles.map((file) =>
+        Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        })
       );
+
+      setFieldValue("pdf", acceptedFileItems[0]);
     },
-    onDropRejected: (fileRejections) => {
-      console.log(fileRejections);
+    onDropRejected: () => {
       setDisplayFeedback(true);
+
+      setFieldValue("pdf", "");
     },
   });
 
@@ -88,18 +99,23 @@ export default function UploadFileForm() {
     [isFocused, isDragAccept, isDragReject]
   );
 
+  const truncateLabelName = (labelName, n) => {
+    return labelName.length > n ? labelName.slice(0, n - 1) + "..." : labelName;
+  };
+
   const acceptedFileItems = acceptedFiles.map((file) => (
     <Chip
+      key={file.path}
       color="success"
       icon={<PictureAsPdfIcon />}
-      label={`${file.path} - ${file.size} bytes`}
+      label={`${truncateLabelName(file.path, 9)} - ${file.size} bytes`}
     />
   ));
 
-  const fileRejectionItems = fileRejections.map(({ file, index }) => {
+  const fileRejectionItems = fileRejections.map(({ file }) => {
     return (
       <ListItem key={file.path}>
-        <Chip color="danger" label={`${file.path} - ${file.size} bytes`} />
+        <Chip color="error" label={`${file.path} - ${file.size} bytes`} />
       </ListItem>
     );
   });
@@ -107,7 +123,7 @@ export default function UploadFileForm() {
   return (
     <>
       <Grid>
-        <Grid item >
+        <Grid item>
           <Paper
             sx={{
               p: 2,
@@ -120,19 +136,30 @@ export default function UploadFileForm() {
 
             <Grid container>
               <Grid item xs={12} {...getRootProps({ style })}>
-                <input {...getInputProps()} />
+                <TextField
+                  id="pdf"
+                  name="pdf"
+                  label="pdf"
+                  onChange={handleChange}
+                  {...getInputProps()}
+                />
                 <p>
-                  Drag and drop PDF certificate here, or click to select
-                  file...
+                  Drag and drop PDF certificate here, or click to select file...
                 </p>
+              </Grid>
+
+              <Grid item xs={12}>
+                <FormHelperText error={touched.pdf && Boolean(errors.pdf)}>
+                  {touched.pdf && errors.pdf}
+                </FormHelperText>
               </Grid>
 
               {displayFeedback && (
                 <Grid container>
                   {acceptedFileItems.length > 0 && (
                     <Grid item>
-                      <h4>Accepted file</h4>
-                      <ul>{acceptedFileItems}</ul>
+                      <h4>Accepted files</h4>
+                      <List>{acceptedFileItems}</List>
                     </Grid>
                   )}
 

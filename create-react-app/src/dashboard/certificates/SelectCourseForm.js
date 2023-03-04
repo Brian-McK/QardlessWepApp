@@ -26,8 +26,6 @@ let dummyCourseItems = [
 export default function SelectCourseForm() {
   const { handleChange, values, errors, touched } = useFormikContext();
 
-  console.log(values);
-
   return (
     <>
       <Grid container spacing={2}>
