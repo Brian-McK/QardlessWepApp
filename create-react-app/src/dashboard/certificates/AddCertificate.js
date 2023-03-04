@@ -83,11 +83,6 @@ export default function AddCertificate() {
                 </Grid>
               ) : null}
             </Grid>
-            {/* {props.values && <p>{JSON.stringify(props.values)}</p>} */}
-
-            {/* {props.errors && <p>{JSON.stringify(props.errors)}</p>} */}
-
-            {props && <p>{JSON.stringify(props, null, 4)}</p>}
           </Form>
         )}
       </Formik>

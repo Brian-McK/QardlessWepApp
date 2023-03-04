@@ -6,7 +6,7 @@ import { Chip, FormHelperText, List, ListItem, TextField } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import { useFormikContext } from "formik";
-import { BlobServiceClient, BlockBlobClient } from "@azure/storage-blob";
+import { BlobServiceClient } from "@azure/storage-blob";
 
 let storageAccountName = process.env.REACT_APP_STORAGE_ACCOUNT_NAME;
 let sasToken = process.env.REACT_APP_SAS_TOKEN;
@@ -52,18 +52,18 @@ export default function UploadFileForm() {
   const [displayFeedback, setDisplayFeedback] = useState(false);
 
   useEffect(() => {
-    handleFileUpload(values.pdf).then((res) => console.log(res));
+    handleFileUpload(values.pdf).then((url) => setFieldValue("pdfUrl", url));
   }, [values.pdf]);
 
   const handleFileUpload = async (file) => {
+    if (!file) {
+      return;
+    }
+
     if (!containerClient.exists) {
       await containerClient.create({
         access: "container",
       });
-    }
-
-    if (!file) {
-      return;
     }
 
     try {
