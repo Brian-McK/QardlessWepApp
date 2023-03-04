@@ -6,6 +6,16 @@ import { Chip, FormHelperText, List, ListItem, TextField } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import { useFormikContext } from "formik";
+import { BlobServiceClient, BlockBlobClient } from "@azure/storage-blob";
+
+let storageAccountName = process.env.REACT_APP_STORAGE_ACCOUNT_NAME;
+let sasToken = process.env.REACT_APP_SAS_TOKEN;
+
+const blobService = new BlobServiceClient(
+  `https://${storageAccountName}.blob.core.windows.net/?${sasToken}`
+);
+
+const containerClient = blobService.getContainerClient("test-brian");
 
 const baseStyle = {
   flex: 1,
@@ -36,19 +46,51 @@ const rejectStyle = {
 };
 
 export default function UploadFileForm() {
-  const {
-    handleChange,
-    values,
-    errors,
-    touched,
-    setFieldValue,
-    setFieldTouched,
-    setValues,
-  } = useFormikContext();
-
-  const [files, setFiles] = useState([]);
+  const { handleChange, values, errors, touched, setFieldValue } =
+    useFormikContext();
 
   const [displayFeedback, setDisplayFeedback] = useState(false);
+
+  useEffect(() => {
+    handleFileUpload(values.pdf).then((res) => console.log(res));
+  }, [values.pdf]);
+
+  const handleFileUpload = async (file) => {
+    if (!containerClient.exists) {
+      await containerClient.create({
+        access: "container",
+      });
+    }
+
+    if (!file) {
+      return;
+    }
+
+    try {
+      // check extension
+      if (!file.path.endsWith(".pdf")) {
+        throw new Error("File must be a PDF");
+      }
+
+      // Upload the file content
+      const fileName = `${file.name}`;
+      const fileType = `${file.type}`;
+
+      const blobOptions = { blobHTTPHeaders: { blobContentType: fileType } };
+
+      const blobClient = containerClient.getBlockBlobClient(fileName);
+
+      const response = await blobClient.uploadBrowserData(file, blobOptions);
+
+      if (response._response.status === 201) {
+        const url = blobClient.url;
+
+        return url.split("?")[0];
+      }
+    } catch (error) {
+      console.error("Error uploading file: ", error);
+    }
+  };
 
   const {
     acceptedFiles,
@@ -65,7 +107,6 @@ export default function UploadFileForm() {
     onFileDialogOpen: () => {
       setDisplayFeedback(false);
     },
-    onDrop: () => {},
     onDropAccepted: (acceptedFiles) => {
       setDisplayFeedback(true);
 
@@ -84,10 +125,10 @@ export default function UploadFileForm() {
     },
   });
 
-  useEffect(() => {
-    // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
-    return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
-  }, []);
+  // useEffect(() => {
+  //   // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
+  //   return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
+  // }, []);
 
   const style = useMemo(
     () => ({

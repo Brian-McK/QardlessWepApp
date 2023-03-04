@@ -47,6 +47,7 @@ export default function AddCertificate() {
           certNumber: "",
           endUserEmail: "",
           pdf: "",
+          pdfUrl: "",
         }}
         validationSchema={validationSchemaAddCertificate}
         onSubmit={(values) => {
@@ -69,16 +70,24 @@ export default function AddCertificate() {
                 <EndUserDetailsForm />
               </Grid>
 
-              <Grid item xs={12} sm={6}>
-                <Button color="primary" variant="contained" type="submit">
-                  Submit
-                </Button>
-
-                {props.values && <p>{JSON.stringify(props.values)}</p>}
-
-                {props.errors && <p>{JSON.stringify(props.errors)}</p>}
-              </Grid>
+              {props.isValid && Object.keys(props.errors).length === 0 ? (
+                <Grid item xs={12} sm={6}>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    type="submit"
+                    disabled={props.isSubmitting}
+                  >
+                    Submit
+                  </Button>
+                </Grid>
+              ) : null}
             </Grid>
+            {/* {props.values && <p>{JSON.stringify(props.values)}</p>} */}
+
+            {/* {props.errors && <p>{JSON.stringify(props.errors)}</p>} */}
+
+            {props && <p>{JSON.stringify(props, null, 4)}</p>}
           </Form>
         )}
       </Formik>
