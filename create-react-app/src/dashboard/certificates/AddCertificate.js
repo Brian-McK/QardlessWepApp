@@ -8,7 +8,6 @@ import EndUserDetailsForm from "./EndUserDetailsForm";
 import UploadFileForm from "./UploadFileForm";
 import * as yup from "yup";
 import { Formik, Form } from "formik";
-import PreviewFile from "../../PreviewFile";
 
 let dummyCourseItems = [
   {
