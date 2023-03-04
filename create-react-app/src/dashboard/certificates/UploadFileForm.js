@@ -149,7 +149,10 @@ export default function UploadFileForm() {
               </Grid>
 
               <Grid item xs={12}>
-                <FormHelperText error={touched.pdf && Boolean(errors.pdf)}>
+                <FormHelperText
+                  sx={{ marginLeft: "14px", marginRight: "14px" }}
+                  error={touched.pdf && Boolean(errors.pdf)}
+                >
                   {touched.pdf && errors.pdf}
                 </FormHelperText>
               </Grid>
