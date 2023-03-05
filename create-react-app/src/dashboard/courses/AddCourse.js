@@ -130,9 +130,6 @@ export default function AddCourse() {
                       Submit
                     </Button>
 
-                    {JSON.stringify(formikAddCourse.values, null, 4)}
-                    <br></br>
-                    {JSON.stringify(formikAddCourse.errors, null, 4)}
                   </Stack>
                 </form>
               </LocalizationProvider>
