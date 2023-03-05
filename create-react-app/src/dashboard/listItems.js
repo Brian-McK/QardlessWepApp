@@ -20,7 +20,7 @@ export const mainListItems = (
     {/* Overview */}
 
     {/* Courses */}
-    <ListSubheader component="div" inset>
+    <ListSubheader component="div" inset className="side-nav-sub-header">
       Manage Courses
     </ListSubheader>
     <ListItemButton>
@@ -38,7 +38,7 @@ export const mainListItems = (
     {/* Courses */}
 
     {/* Certificates */}
-    <ListSubheader component="div" inset>
+    <ListSubheader component="div" inset className="side-nav-sub-header">
       Manage Certificates
     </ListSubheader>
     <ListItemButton>

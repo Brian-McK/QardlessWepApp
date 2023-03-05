@@ -96,6 +96,14 @@ function DashboardContent() {
     setOpen(!open);
   };
 
+  React.useLayoutEffect(() => {
+    const sideNavSubHeaders = document.querySelectorAll(".side-nav-sub-header");
+
+    sideNavSubHeaders.forEach((item) => {
+      !open ? (item.style.display = "none") : (item.style.display = "block");
+    });
+  }, [open]);
+
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: "flex" }}>
@@ -170,9 +178,9 @@ function DashboardContent() {
           {/* Main Content */}
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             {/* <Overview /> */}
-            <AddCertificate />
+            {/* <AddCertificate /> */}
 
-            {/* <Courses /> */}
+            <Courses />
             {/* <ManageCertificate /> */}
             <Copyright sx={{ pt: 4 }} />
           </Container>

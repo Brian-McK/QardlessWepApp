@@ -11,12 +11,14 @@ import dayjs from "dayjs";
 import { SharedSnackbarConsumer } from "../../providers/SharedSnackbar.context";
 
 const today = dayjs();
+const yesterday = today.subtract(1, 'day');
 
 const validationSchemaAddCourse = yup.object({
   courseTitle: yup
     .string("Enter course title")
     .required("Course title is required"),
   startDate: yup.date().required("Date is required"),
+  expiryDate: yup.date().required("Date is required"),
 });
 
 export default function AddCourse() {
@@ -77,7 +79,19 @@ export default function AddCourse() {
                         formikAddCourse.setFieldValue("startDate", value)
                       }
                       renderInput={(params) => (
-                        <TextField variant="filled" fullWidth {...params} />
+                        <TextField
+                          variant="filled"
+                          fullWidth
+                          {...params}
+                          error={
+                            formikAddCourse.touched.startDate &&
+                            Boolean(formikAddCourse.errors.startDate)
+                          }
+                          helperText={
+                            formikAddCourse.touched.startDate &&
+                            formikAddCourse.errors.startDate
+                          }
+                        />
                       )}
                     />
 
@@ -90,7 +104,19 @@ export default function AddCourse() {
                         formikAddCourse.setFieldValue("expiryDate", value)
                       }
                       renderInput={(params) => (
-                        <TextField variant="filled" fullWidth {...params} />
+                        <TextField
+                          variant="filled"
+                          fullWidth
+                          {...params}
+                          error={
+                            formikAddCourse.touched.expiryDate &&
+                            Boolean(formikAddCourse.errors.expiryDate)
+                          }
+                          helperText={
+                            formikAddCourse.touched.expiryDate &&
+                            formikAddCourse.errors.expiryDate
+                          }
+                        />
                       )}
                     />
 
