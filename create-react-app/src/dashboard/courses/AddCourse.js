@@ -9,6 +9,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { SharedSnackbarConsumer } from "../../providers/SharedSnackbar.context";
+import { useAddCourseMutation } from "../../api/services/courses";
 
 const today = dayjs();
 const yesterday = today.subtract(1, "day");
@@ -22,6 +23,9 @@ const validationSchemaAddCourse = yup.object({
 });
 
 export default function AddCourse() {
+  const [addCourse, { data, isError, isLoading, isSuccess, error }] =
+    useAddCourseMutation();
+
   const formikAddCourse = useFormik({
     initialValues: {
       courseTitle: "",
@@ -29,8 +33,21 @@ export default function AddCourse() {
       expiryDate: today.add(1, "year"),
     },
     validationSchema: validationSchemaAddCourse,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      // "businessId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      // "title": "string",
+      // "courseDate": "string",
+      // "expiry": "string"
+
+      // mocking a business id from database
+      const addCoursePayload = {
+        businessId: "358c4557-c65c-4c76-49d7-08db1a8071a9",
+        title: values.courseTitle,
+        courseDate: `${values.startDate.format("DD/MM/YYYY")}`,
+        expiry: `${values.expiryDate.format("DD/MM/YYYY")}`,
+      };
+
+      addCourse(addCoursePayload);
     },
   });
   return (
@@ -130,6 +147,11 @@ export default function AddCourse() {
                       Submit
                     </Button>
 
+                    <p>{"isLoading: " + isLoading}</p>
+
+                    <p>{"isSuccess: " + isSuccess}</p>
+
+                    <p>{"isError: " + isError}</p>
                   </Stack>
                 </form>
               </LocalizationProvider>
