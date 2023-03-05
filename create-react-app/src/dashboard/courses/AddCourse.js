@@ -11,14 +11,14 @@ import dayjs from "dayjs";
 import { SharedSnackbarConsumer } from "../../providers/SharedSnackbar.context";
 
 const today = dayjs();
-const yesterday = today.subtract(1, 'day');
+const yesterday = today.subtract(1, "day");
 
 const validationSchemaAddCourse = yup.object({
   courseTitle: yup
     .string("Enter course title")
     .required("Course title is required"),
-  startDate: yup.date().required("Date is required"),
-  expiryDate: yup.date().required("Date is required"),
+  startDate: yup.date().nonNullable().typeError("Invalid Date"),
+  expiryDate: yup.date().nonNullable().typeError("Invalid Date"),
 });
 
 export default function AddCourse() {
@@ -97,6 +97,7 @@ export default function AddCourse() {
 
                     <DatePicker
                       inputFormat="DD/MM/YYYY"
+                      disablePast
                       label="Course Expiry Date"
                       views={["year", "month", "day"]}
                       value={formikAddCourse.values.expiryDate}
@@ -128,6 +129,10 @@ export default function AddCourse() {
                     >
                       Submit
                     </Button>
+
+                    {JSON.stringify(formikAddCourse.values, null, 4)}
+                    <br></br>
+                    {JSON.stringify(formikAddCourse.errors, null, 4)}
                   </Stack>
                 </form>
               </LocalizationProvider>
