@@ -26,6 +26,11 @@ export default function AddCourse() {
   const [addCourse, { data, isError, isLoading, isSuccess, error }] =
     useAddCourseMutation();
 
+  // reset form if successfull
+  React.useEffect(() => {
+    formikAddCourse.resetForm();
+  }, [isSuccess]);
+
   const formikAddCourse = useFormik({
     initialValues: {
       courseTitle: "",
@@ -142,6 +147,7 @@ export default function AddCourse() {
                       color="primary"
                       variant="contained"
                       fullWidth
+                      disabled={isLoading}
                       type="submit"
                     >
                       Submit
@@ -152,6 +158,8 @@ export default function AddCourse() {
                     <p>{"isSuccess: " + isSuccess}</p>
 
                     <p>{"isError: " + isError}</p>
+
+                    <p>{"data: " + JSON.stringify(data)}</p>
                   </Stack>
                 </form>
               </LocalizationProvider>
