@@ -8,7 +8,10 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import { SharedSnackbarConsumer } from "../../providers/SharedSnackbar.context";
+import {
+  SharedSnackbarConsumer,
+  SharedSnackbarContext,
+} from "../../providers/SharedSnackbar.context";
 import { useAddCourseMutation } from "../../api/services/courses";
 
 const today = dayjs();
@@ -26,10 +29,20 @@ export default function AddCourse() {
   const [addCourse, { data, isError, isLoading, isSuccess, error }] =
     useAddCourseMutation();
 
-  // reset form if successfull
+  const snackBarContext = React.useContext(SharedSnackbarContext);
+
+  // reset form if successfull, display snackbar is successful or not
   React.useEffect(() => {
     formikAddCourse.resetForm();
-  }, [isSuccess]);
+
+    if (isSuccess == true) {
+      snackBarContext.openSnackbar("Course added");
+    }
+
+    if (isError == true) {
+      snackBarContext.openSnackbar("Error Adding Course!");
+    }
+  }, [isSuccess, isError]);
 
   const formikAddCourse = useFormik({
     initialValues: {
