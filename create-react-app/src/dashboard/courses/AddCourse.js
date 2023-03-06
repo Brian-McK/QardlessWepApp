@@ -36,7 +36,7 @@ export default function AddCourse() {
     formikAddCourse.resetForm();
 
     if (isSuccess == true) {
-      snackBarContext.openSnackbar("Course added");
+      snackBarContext.openSnackbar(`Course ${data.title} added!`);
     }
 
     if (isError == true) {
