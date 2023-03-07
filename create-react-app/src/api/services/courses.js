@@ -12,7 +12,7 @@ export const coursesApi = createApi({
       providesTags: ["Courses"],
     }),
     getAllCoursesByBusinessId: builder.query({
-      query: (businessId) => `courses/${businessId}`,
+      query: (businessId) => `courses/businesses/${businessId}`,
       providesTags: ["Courses"],
     }),
     getCourseById: builder.query({
