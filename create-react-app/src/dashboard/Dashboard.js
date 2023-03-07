@@ -178,9 +178,9 @@ function DashboardContent() {
           {/* Main Content */}
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             {/* <Overview /> */}
-            {/* <AddCertificate /> */}
-
-            <Courses />
+            <AddCertificate />
+{/* 
+            <Courses /> */}
             {/* <ManageCertificate /> */}
             <Copyright sx={{ pt: 4 }} />
           </Container>
