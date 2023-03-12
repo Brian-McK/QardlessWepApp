@@ -11,21 +11,22 @@ import { Formik, Form } from "formik";
 import { SharedSnackbarContext } from "../../providers/SharedSnackbar.context";
 import { useGetAllCoursesByBusinessIdQuery } from "../../api/services/courses";
 import { useAddCertificateMutation } from "../../api/services/certificates";
+import { useState } from "react";
 
 export default function AddCertificate() {
   const [addCertificate, result] = useAddCertificateMutation();
 
-  const {
-    data = [],
-    error,
-    isLoading,
-    isError,
-    isSuccess,
-  } = useGetAllCoursesByBusinessIdQuery("c18a70cb-4226-496a-3e73-08db2303f52c"); // TESTING - Ethan change value here to the business id that created the course
+  const [formReset, setFormReset] = useState(false);
 
-
+  const { data = [] } = useGetAllCoursesByBusinessIdQuery(
+    "c18a70cb-4226-496a-3e73-08db2303f52c"
+  ); // TESTING - Ethan change value here to the business id that created the course
 
   const snackBarContext = React.useContext(SharedSnackbarContext);
+
+  function handleFormReset(val) {
+    setFormReset(val);
+  }
 
   // reset form if successfull, display snackbar is successful or not
   React.useEffect(() => {
@@ -61,9 +62,8 @@ export default function AddCertificate() {
           pdfUrl: "",
         }}
         validationSchema={validationSchemaAddCertificate}
-        onSubmit={async (values) => {
-          console.log("values", values);
-
+        onReset={() => setFormReset(true)}
+        onSubmit={async (values, { resetForm }) => {
           const addCertificatePayload = {
             courseId: values.selectCourse,
             endUserEmail: values.endUserEmail,
@@ -71,7 +71,10 @@ export default function AddCertificate() {
             pdfUrl: values.pdfUrl,
           };
 
-          addCertificate(addCertificatePayload);
+          addCertificate(addCertificatePayload)
+            .unwrap()
+            .then(() => resetForm())
+            .catch((error) => console.log(error));
         }}
       >
         {(props) => (
@@ -84,7 +87,10 @@ export default function AddCertificate() {
                 <CertificateDetailsForm />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <UploadFileForm />
+                <UploadFileForm
+                  formReset={formReset}
+                  onFormReset={handleFormReset}
+                />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <EndUserDetailsForm />
@@ -99,13 +105,6 @@ export default function AddCertificate() {
                 >
                   Submit
                 </Button>
-
-                <p>{"isError: " + result.isError}</p>
-                <p>{"isLoading: " + result.isLoading}</p>
-                <p>{"isSuccess: " + result.isSuccess}</p>
-                <p>{"values: " + JSON.stringify(props.values, null, 4)}</p>
-                <p>{"data: " + JSON.stringify(result.data, null, 4)}</p>
-                <p>{"result: " + JSON.stringify(result, null, 4)}</p>
               </Grid>
             </Grid>
           </Form>

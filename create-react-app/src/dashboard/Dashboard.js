@@ -178,10 +178,13 @@ function DashboardContent() {
           {/* Main Content */}
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             {/* <Overview /> */}
+
+            {/* TESTING - Ethan, Add certificate and Courses components. You need to use only one at a time, so comment and uncomment the components below. I have not set up routing yet so this is the workaround */}
             <AddCertificate />
-{/* 
-            <Courses /> */}
-            {/* <ManageCertificate /> */}
+
+            {/* <Courses /> */}
+
+            
             <Copyright sx={{ pt: 4 }} />
           </Container>
           {/* Main Content */}
