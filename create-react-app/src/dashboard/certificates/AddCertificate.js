@@ -21,7 +21,9 @@ export default function AddCertificate() {
     isLoading,
     isError,
     isSuccess,
-  } = useGetAllCoursesByBusinessIdQuery("358c4557-c65c-4c76-49d7-08db1a8071a9");
+  } = useGetAllCoursesByBusinessIdQuery("c18a70cb-4226-496a-3e73-08db2303f52c"); // TESTING - Ethan change value here to the business id that created the course
+
+
 
   const snackBarContext = React.useContext(SharedSnackbarContext);
 
@@ -29,7 +31,7 @@ export default function AddCertificate() {
   React.useEffect(() => {
     if (result.isSuccess == true) {
       snackBarContext.openSnackbar(
-        `Certificate added for ${result.data.endUserEmail}!`
+        `Certificate added for ${result.originalArgs.endUserEmail}!`
       );
     }
 
@@ -103,6 +105,7 @@ export default function AddCertificate() {
                 <p>{"isSuccess: " + result.isSuccess}</p>
                 <p>{"values: " + JSON.stringify(props.values, null, 4)}</p>
                 <p>{"data: " + JSON.stringify(result.data, null, 4)}</p>
+                <p>{"result: " + JSON.stringify(result, null, 4)}</p>
               </Grid>
             </Grid>
           </Form>
