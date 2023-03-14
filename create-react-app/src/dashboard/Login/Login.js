@@ -4,6 +4,8 @@ import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import { useFormik } from "formik";
+import * as yup from "yup";
 import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
@@ -28,6 +30,17 @@ function Copyright(props) {
 }
 
 const theme = createTheme();
+
+const validationSchemaLoginUser = yup.object({
+  email: yup.string().required("Please enter your email address").email(),
+  password: yup
+    .string()
+    .required("Please enter your password")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+    ),
+});
 
 export default function Login() {
   const handleSubmit = (event) => {

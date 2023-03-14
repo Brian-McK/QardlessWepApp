@@ -7,8 +7,8 @@ export default function App() {
   return (
     <div>
       <SharedSnackbarProvider>
-        <Dashboard />
-        {/* <Login /> */}
+        {/* <Dashboard /> */}
+        <Login />
       </SharedSnackbarProvider>
     </div>
   );
