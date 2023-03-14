@@ -27,6 +27,8 @@ import Title from "./Title";
 import AddCertificate from "./certificates/AddCertificate";
 import ManageCertificates from "./certificates/ManageCertificates";
 import Courses from "./courses/Courses";
+import { useContext } from "react";
+import { UserContext } from "../providers/User.context";
 
 function Copyright(props) {
   return (
@@ -91,6 +93,8 @@ const Drawer = styled(MuiDrawer, {
 const mdTheme = createTheme();
 
 function DashboardContent() {
+  const { user, setUser } = useContext(UserContext);
+
   const [open, setOpen] = useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -133,7 +137,7 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Qardless Employee Business Name
+              {user}
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -184,7 +188,6 @@ function DashboardContent() {
 
             {/* <Courses /> */}
 
-            
             <Copyright sx={{ pt: 4 }} />
           </Container>
           {/* Main Content */}
