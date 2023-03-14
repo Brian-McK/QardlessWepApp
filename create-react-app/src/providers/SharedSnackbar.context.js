@@ -35,4 +35,4 @@ const SharedSnackbarProvider = ({ children }) => {
 
 const SharedSnackbarConsumer = SharedSnackbarContext.Consumer;
 
-export { SharedSnackbarProvider, SharedSnackbarConsumer };
+export { SharedSnackbarProvider, SharedSnackbarConsumer, SharedSnackbarContext };

@@ -2,28 +2,11 @@ import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
 import { useFormikContext } from "formik";
-import { FormHelperText, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 
-let dummyCourseItems = [
-  {
-    id: 1,
-    courseTitle: "Forklift training",
-  },
-  {
-    id: 2,
-    courseTitle: "Manuel handling",
-  },
-  {
-    id: 3,
-    courseTitle: "Food safety training",
-  },
-];
-
-export default function SelectCourseForm() {
+export default function SelectCourseForm({ courses }) {
   const { handleChange, values, errors, touched } = useFormikContext();
 
   return (
@@ -56,10 +39,10 @@ export default function SelectCourseForm() {
                   <em>None</em>
                 </MenuItem>
 
-                {dummyCourseItems.map((item, index) => {
+                {courses.map((item) => {
                   return (
-                    <MenuItem key={index} value={item.courseTitle}>
-                      {item.courseTitle}
+                    <MenuItem key={item.id} value={item.id}>
+                      {item.title}
                     </MenuItem>
                   );
                 })}

@@ -8,36 +8,48 @@ import EndUserDetailsForm from "./EndUserDetailsForm";
 import UploadFileForm from "./UploadFileForm";
 import * as yup from "yup";
 import { Formik, Form } from "formik";
-
-let dummyCourseItems = [
-  {
-    id: 1,
-    courseTitle: "Forklift training",
-  },
-  {
-    id: 2,
-    courseTitle: "Manuel handling",
-  },
-  {
-    id: 3,
-    courseTitle: "Food safety training",
-  },
-];
-
-const courseTitles = dummyCourseItems.map(function (obj) {
-  return obj.courseTitle;
-});
-
-const validationSchemaAddCertificate = yup.object({
-  selectCourse: yup.string().required("Course is required").oneOf(courseTitles),
-  certNumber: yup
-    .string("Enter certificate number")
-    .required("Certificate number is required"),
-  endUserEmail: yup.string().required().email(),
-  pdf: yup.mixed().required("Pdf is required"),
-});
+import { SharedSnackbarContext } from "../../providers/SharedSnackbar.context";
+import { useGetAllCoursesByBusinessIdQuery } from "../../api/services/courses";
+import { useAddCertificateMutation } from "../../api/services/certificates";
+import { useState } from "react";
 
 export default function AddCertificate() {
+  const [addCertificate, result] = useAddCertificateMutation();
+
+  const [formReset, setFormReset] = useState(false);
+
+  const { data = [] } = useGetAllCoursesByBusinessIdQuery(
+    "c18a70cb-4226-496a-3e73-08db2303f52c"
+  ); // TESTING - Ethan change value here to the business id that created the course
+
+  const snackBarContext = React.useContext(SharedSnackbarContext);
+
+  function handleFormReset(val) {
+    setFormReset(val);
+  }
+
+  // reset form if successfull, display snackbar is successful or not
+  React.useEffect(() => {
+    if (result.isSuccess == true) {
+      snackBarContext.openSnackbar(
+        `Certificate added for ${result.originalArgs.endUserEmail}!`
+      );
+    }
+
+    if (result.isError == true) {
+      snackBarContext.openSnackbar("Error Adding Certificate!");
+    }
+  }, [result.isSuccess, result.isError]);
+
+  const validationSchemaAddCertificate = yup.object({
+    selectCourse: yup.string().required("Course is required"),
+    certNumber: yup
+      .string("Enter certificate number")
+      .required("Certificate number is required"),
+    endUserEmail: yup.string().required().email(),
+    pdf: yup.mixed().required("Pdf is required"),
+  });
+
   return (
     <>
       <Title>Add Certificate</Title>
@@ -50,38 +62,50 @@ export default function AddCertificate() {
           pdfUrl: "",
         }}
         validationSchema={validationSchemaAddCertificate}
-        onSubmit={(values) => {
-          alert(JSON.stringify(values, null, 2));
+        onReset={() => setFormReset(true)}
+        onSubmit={async (values, { resetForm }) => {
+          const addCertificatePayload = {
+            courseId: values.selectCourse,
+            endUserEmail: values.endUserEmail,
+            certNumber: values.certNumber,
+            pdfUrl: values.pdfUrl,
+          };
+
+          addCertificate(addCertificatePayload)
+            .unwrap()
+            .then(() => resetForm())
+            .catch((error) => console.log(error));
         }}
       >
         {(props) => (
           <Form>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
-                <SelectCourseForm />
+                <SelectCourseForm courses={data} />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <CertificateDetailsForm />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <UploadFileForm />
+                <UploadFileForm
+                  formReset={formReset}
+                  onFormReset={handleFormReset}
+                />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <EndUserDetailsForm />
               </Grid>
 
-              {props.isValid && Object.keys(props.errors).length === 0 ? (
-                <Grid item xs={12} sm={6}>
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    type="submit"
-                    disabled={props.isSubmitting}
-                  >
-                    Submit
-                  </Button>
-                </Grid>
-              ) : null}
+              <Grid item xs={12} sm={6}>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  type="submit"
+                  disabled={props.isSubmitting}
+                >
+                  Submit
+                </Button>
+              </Grid>
             </Grid>
           </Form>
         )}

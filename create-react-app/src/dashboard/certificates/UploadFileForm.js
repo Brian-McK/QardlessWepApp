@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useMemo, useEffect, useState } from "react";
+import { useMemo, useEffect, useState, useLayoutEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { Chip, FormHelperText, List, ListItem, TextField } from "@mui/material";
@@ -45,15 +45,29 @@ const rejectStyle = {
   borderColor: "#f44336",
 };
 
-export default function UploadFileForm() {
+export default function UploadFileForm({ formReset, onFormReset }) {
   const { handleChange, values, errors, touched, setFieldValue } =
     useFormikContext();
 
   const [displayFeedback, setDisplayFeedback] = useState(false);
 
+  const [files, setFiles] = useState([]);
+
+  function resetFormResetParent() {
+    onFormReset(false);
+  }
+
   useEffect(() => {
     handleFileUpload(values.pdf).then((url) => setFieldValue("pdfUrl", url));
   }, [values.pdf]);
+
+  useLayoutEffect(() => {
+    if (formReset) {
+      setFiles([]);
+    }
+
+    return () => resetFormResetParent(false);
+  }, [formReset]);
 
   const handleFileUpload = async (file) => {
     if (!file) {
@@ -117,6 +131,8 @@ export default function UploadFileForm() {
       );
 
       setFieldValue("pdf", acceptedFileItems[0]);
+
+      setFiles((files) => [acceptedFileItems[0], ...files]);
     },
     onDropRejected: () => {
       setDisplayFeedback(true);
@@ -144,7 +160,7 @@ export default function UploadFileForm() {
     return labelName.length > n ? labelName.slice(0, n - 1) + "..." : labelName;
   };
 
-  const acceptedFileItems = acceptedFiles.map((file) => (
+  const acceptedFileItems = files.map((file) => (
     <Chip
       key={file.path}
       color="success"

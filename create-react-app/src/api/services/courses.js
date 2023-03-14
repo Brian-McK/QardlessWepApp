@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const coursesApi = createApi({
   reducerPath: "coursesApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://qardlessapi.azurewebsites.net/api/",
+    baseUrl: "https://localhost:40443/",
   }),
   tagTypes: ["Courses"],
   endpoints: (builder) => ({
@@ -12,7 +12,7 @@ export const coursesApi = createApi({
       providesTags: ["Courses"],
     }),
     getAllCoursesByBusinessId: builder.query({
-      query: (businessId) => `courses/${businessId}`,
+      query: (businessId) => `courses/businesses/${businessId}`,
       providesTags: ["Courses"],
     }),
     getCourseById: builder.query({

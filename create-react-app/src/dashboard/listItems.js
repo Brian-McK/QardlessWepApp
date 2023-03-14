@@ -6,7 +6,7 @@ import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
 import NoteAddIcon from "@mui/icons-material/NoteAdd";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
-import ListIcon from '@mui/icons-material/List';
+import ListIcon from "@mui/icons-material/List";
 
 export const mainListItems = (
   <React.Fragment>
@@ -20,7 +20,7 @@ export const mainListItems = (
     {/* Overview */}
 
     {/* Courses */}
-    <ListSubheader component="div" inset>
+    <ListSubheader component="div" inset className="side-nav-sub-header">
       Manage Courses
     </ListSubheader>
     <ListItemButton>
@@ -38,7 +38,7 @@ export const mainListItems = (
     {/* Courses */}
 
     {/* Certificates */}
-    <ListSubheader component="div" inset>
+    <ListSubheader component="div" inset className="side-nav-sub-header">
       Manage Certificates
     </ListSubheader>
     <ListItemButton>
