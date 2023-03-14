@@ -17,9 +17,9 @@ export default function App() {
   return (
     <div>
       <SharedSnackbarProvider>
-        {/* <Login /> */}
         <UserContext.Provider value={providerValue}>
-          <Dashboard />
+          <Login />
+          {/* <Dashboard /> */}
         </UserContext.Provider>
       </SharedSnackbarProvider>
     </div>

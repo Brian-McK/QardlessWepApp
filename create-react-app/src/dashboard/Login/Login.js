@@ -10,6 +10,8 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useContext } from "react";
 import { UserContext } from "../../providers/User.context";
+import { useLoginEmployeeMutation } from "../../api/services/login";
+import { SharedSnackbarContext } from "../../providers/SharedSnackbar.context";
 
 function Copyright(props) {
   return (
@@ -39,8 +41,27 @@ const validationSchemaLoginUser = yup.object({
 });
 
 export default function Login() {
-
   const { user, setUser } = useContext(UserContext);
+
+  const [loginEmployee, result] = useLoginEmployeeMutation();
+
+  const snackBarContext = React.useContext(SharedSnackbarContext);
+
+  React.useEffect(() => {
+    if (result.isError == true) {
+      snackBarContext.openSnackbar(
+        `Login failed for ${result.originalArgs.email}, please try again!`
+      );
+    }
+
+    if (result.isSuccess == true) {
+      setUser(result.data);
+
+      snackBarContext.openSnackbar(`Welcome ${result.originalArgs.email}!`);
+
+      console.log(user);
+    }
+  }, [result.isSuccess ,result.isError]);
 
   const formikLoginUser = useFormik({
     initialValues: {
@@ -54,9 +75,10 @@ export default function Login() {
         password: values.password,
       };
 
-      console.log(loginUserPayload);
-
-      loginUser(loginUserPayload);
+      loginEmployee(loginUserPayload)
+        .unwrap()
+        .then((result) => console.log("fulfilled", result))
+        .catch((error) => console.error("rejected", error));
     },
   });
 
@@ -127,14 +149,17 @@ export default function Login() {
                 color="primary"
                 variant="contained"
                 fullWidth
+                disabled={result.isLoading}
                 type="submit"
               >
-                Submit
+                Login
               </Button>
             </Stack>
           </form>
         </Grid>
       </Grid>
+
+      <pre>{JSON.stringify(result, null, 2)}</pre>
 
       <Copyright sx={{ mt: 8, mb: 4 }} />
     </ThemeProvider>
