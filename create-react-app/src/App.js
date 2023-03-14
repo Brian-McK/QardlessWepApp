@@ -3,6 +3,7 @@ import Dashboard from "../src/dashboard/Dashboard";
 import { SharedSnackbarProvider } from "./providers/SharedSnackbar.context";
 import Login from "./dashboard/Login/Login";
 import { UserContext } from "./providers/User.context";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 export default function App() {
   const [user, setUser] = React.useState(null);

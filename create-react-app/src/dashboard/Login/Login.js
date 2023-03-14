@@ -8,6 +8,8 @@ import * as yup from "yup";
 import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useContext } from "react";
+import { UserContext } from "../../providers/User.context";
 
 function Copyright(props) {
   return (
@@ -37,6 +39,9 @@ const validationSchemaLoginUser = yup.object({
 });
 
 export default function Login() {
+
+  const { user, setUser } = useContext(UserContext);
+
   const formikLoginUser = useFormik({
     initialValues: {
       email: "",

@@ -137,7 +137,7 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              {user}
+              <pre>{JSON.stringify(user, null, 2)}</pre>
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
