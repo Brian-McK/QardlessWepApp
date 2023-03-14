@@ -58,9 +58,11 @@ export default function Login() {
     validationSchema: validationSchemaLoginUser,
     onSubmit: async (values) => {
       const loginUserPayload = {
-        email: "",
-        password: "",
+        email: values.email,
+        password: values.password,
       };
+
+      console.log(loginUserPayload);
 
       loginUser(loginUserPayload);
     },
@@ -70,17 +72,18 @@ export default function Login() {
     <ThemeProvider theme={theme}>
       <Grid container justifyContent={"center"} spacing={2}>
         <Grid item xs={10} sm={6} md={5} lg={4}>
-          <Stack spacing={2} sx={{
-            alignItems: "center",
-            padding: "24px"
-          }}>
+          <Stack
+            spacing={2}
+            sx={{
+              alignItems: "center",
+              padding: "24px",
+            }}
+          >
             <Avatar
               src="qardless_logo.png"
               sx={{ width: 250, height: 250, mb: 2 }}
             />
-            <Typography variant="h4">
-              Login
-            </Typography>
+            <Typography variant="h4">Login</Typography>
           </Stack>
 
           <form onSubmit={formikLoginUser.handleSubmit}>
@@ -104,6 +107,7 @@ export default function Login() {
               />
 
               <TextField
+                autoComplete="off"
                 variant="filled"
                 fullWidth
                 id="password"
