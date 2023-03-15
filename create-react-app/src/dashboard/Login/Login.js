@@ -161,6 +161,8 @@ export default function Login() {
 
       <pre>{JSON.stringify(result, null, 2)}</pre>
 
+      <pre>{JSON.stringify(user, null, 2)}</pre>
+
       <Copyright sx={{ mt: 8, mb: 4 }} />
     </ThemeProvider>
   );
