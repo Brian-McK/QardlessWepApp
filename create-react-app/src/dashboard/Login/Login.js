@@ -8,8 +8,8 @@ import * as yup from "yup";
 import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useContext } from "react";
-import { UserContext } from "../../providers/User.context";
+import { useAuth } from "../../providers/Auth.context";
+import { useNavigate } from "react-router-dom";
 import { useLoginEmployeeMutation } from "../../api/services/login";
 import { SharedSnackbarContext } from "../../providers/SharedSnackbar.context";
 
@@ -41,7 +41,8 @@ const validationSchemaLoginUser = yup.object({
 });
 
 export default function Login() {
-  const { user, setUser } = useContext(UserContext);
+  const { setUser } = useAuth();
+  const navigate = useNavigate();
 
   const [loginEmployee, result] = useLoginEmployeeMutation();
 
@@ -60,8 +61,10 @@ export default function Login() {
       snackBarContext.openSnackbar(`Welcome ${result.originalArgs.email}!`);
 
       console.log(user);
+
+      navigate("/dashboard");
     }
-  }, [result.isSuccess ,result.isError]);
+  }, [result.isSuccess, result.isError]);
 
   const formikLoginUser = useFormik({
     initialValues: {
@@ -160,8 +163,6 @@ export default function Login() {
       </Grid>
 
       <pre>{JSON.stringify(result, null, 2)}</pre>
-
-      <pre>{JSON.stringify(user, null, 2)}</pre>
 
       <Copyright sx={{ mt: 8, mb: 4 }} />
     </ThemeProvider>

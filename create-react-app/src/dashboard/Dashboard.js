@@ -19,16 +19,13 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { mainListItems } from "./listItems";
-import Chart from "./Chart";
-import Deposits from "./Deposits";
-import Orders from "./Orders";
-import Overview from "./Overview";
-import Title from "./Title";
 import AddCertificate from "./certificates/AddCertificate";
 import ManageCertificates from "./certificates/ManageCertificates";
 import Courses from "./courses/Courses";
 import { useContext } from "react";
-import { UserContext } from "../providers/User.context";
+import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../providers/Auth.context";
 
 function Copyright(props) {
   return (
@@ -93,20 +90,10 @@ const Drawer = styled(MuiDrawer, {
 const mdTheme = createTheme();
 
 function DashboardContent() {
-  const { user, setUser } = useContext(UserContext);
-
   const [open, setOpen] = useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
-  React.useLayoutEffect(() => {
-    const sideNavSubHeaders = document.querySelectorAll(".side-nav-sub-header");
-
-    sideNavSubHeaders.forEach((item) => {
-      !open ? (item.style.display = "none") : (item.style.display = "block");
-    });
-  }, [open]);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -136,9 +123,7 @@ function DashboardContent() {
               color="inherit"
               noWrap
               sx={{ flexGrow: 1 }}
-            >
-              <pre>{JSON.stringify(user, null, 2)}</pre>
-            </Typography>
+            ></Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <NotificationsIcon />
@@ -198,5 +183,7 @@ function DashboardContent() {
 }
 
 export default function Dashboard() {
+  const { user, setUser } = useAuth();
+  const navigate = useNavigate();
   return <DashboardContent />;
 }

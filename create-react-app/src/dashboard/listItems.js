@@ -1,58 +1,41 @@
 import * as React from "react";
-import ListSubheader from "@mui/material/ListSubheader";
+import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import HomeIcon from "@mui/icons-material/Home";
-import NoteAddIcon from "@mui/icons-material/NoteAdd";
-import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
-import ListIcon from "@mui/icons-material/List";
+import BarChartIcon from '@mui/icons-material/BarChart';
+import LogoutIcon from "@mui/icons-material/Logout";
+import SchoolIcon from "@mui/icons-material/School";
+import QueryStatsIcon from '@mui/icons-material/QueryStats';
 
 export const mainListItems = (
   <React.Fragment>
-    {/* Overview */}
     <ListItemButton>
       <ListItemIcon>
-        <HomeIcon />
+        <BarChartIcon />
       </ListItemIcon>
       <ListItemText primary="Overview" />
     </ListItemButton>
-    {/* Overview */}
 
-    {/* Courses */}
-    <ListSubheader component="div" inset className="side-nav-sub-header">
-      Manage Courses
-    </ListSubheader>
     <ListItemButton>
       <ListItemIcon>
-        <ListIcon />
+        <SchoolIcon />
       </ListItemIcon>
-      <ListItemText primary="View Courses" />
+      <ListItemText primary="Courses" />
     </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <NoteAddIcon />
-      </ListItemIcon>
-      <ListItemText primary="Add Course" />
-    </ListItemButton>
-    {/* Courses */}
 
-    {/* Certificates */}
-    <ListSubheader component="div" inset className="side-nav-sub-header">
-      Manage Certificates
-    </ListSubheader>
     <ListItemButton>
       <ListItemIcon>
-        <ListIcon />
+        <WorkspacePremiumIcon />
       </ListItemIcon>
-      <ListItemText primary="View Certificates" />
+      <ListItemText primary="Certificates" />
     </ListItemButton>
+
     <ListItemButton>
       <ListItemIcon>
-        <AssignmentTurnedInIcon />
+        <LogoutIcon />
       </ListItemIcon>
-      <ListItemText primary="Add Certificate" />
+      <ListItemText primary="Logout" />
     </ListItemButton>
-    {/* Certificates */}
   </React.Fragment>
 );
