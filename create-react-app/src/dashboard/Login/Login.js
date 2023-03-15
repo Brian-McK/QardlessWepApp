@@ -60,8 +60,6 @@ export default function Login() {
 
       snackBarContext.openSnackbar(`Welcome ${result.originalArgs.email}!`);
 
-      console.log(user);
-
       navigate("/dashboard");
     }
   }, [result.isSuccess, result.isError]);

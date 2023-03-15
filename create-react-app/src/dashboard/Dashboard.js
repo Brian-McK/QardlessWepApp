@@ -12,20 +12,16 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
 import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { mainListItems } from "./listItems";
+import ListItems from "./listItems";
 import AddCertificate from "./certificates/AddCertificate";
-import ManageCertificates from "./certificates/ManageCertificates";
-import Courses from "./courses/Courses";
-import { useContext } from "react";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../providers/Auth.context";
+import MainRoutes from "./MainRoutes";
+import MainContent from "./MainContent";
 
 function Copyright(props) {
   return (
@@ -90,10 +86,22 @@ const Drawer = styled(MuiDrawer, {
 const mdTheme = createTheme();
 
 function DashboardContent() {
+  const { user, setUser } = useAuth();
+  const navigate = useNavigate();
+
   const [open, setOpen] = useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  const logout = useCallback(
+    (e) => {
+      e.preventDefault();
+      setUser(null);
+      navigate("/");
+    },
+    [setUser]
+  );
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -123,7 +131,9 @@ function DashboardContent() {
               color="inherit"
               noWrap
               sx={{ flexGrow: 1 }}
-            ></Typography>
+            >
+              {user.name}
+            </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <NotificationsIcon />
@@ -146,7 +156,7 @@ function DashboardContent() {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {mainListItems}
+            <ListItems />
             <Divider sx={{ my: 1 }} />
           </List>
         </Drawer>
@@ -166,12 +176,12 @@ function DashboardContent() {
 
           {/* Main Content */}
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            {/* <Overview /> */}
-
             {/* TESTING - Ethan, Add certificate and Courses components. You need to use only one at a time, so comment and uncomment the components below. I have not set up routing yet so this is the workaround */}
-            <AddCertificate />
+            {/* <AddCertificate /> */}
 
             {/* <Courses /> */}
+            <MainContent/>
+            <MainRoutes />
 
             <Copyright sx={{ pt: 4 }} />
           </Container>
@@ -183,7 +193,5 @@ function DashboardContent() {
 }
 
 export default function Dashboard() {
-  const { user, setUser } = useAuth();
-  const navigate = useNavigate();
   return <DashboardContent />;
 }
