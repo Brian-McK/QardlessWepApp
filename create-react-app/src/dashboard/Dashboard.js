@@ -11,31 +11,14 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
-import Container from "@mui/material/Container";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import ListItems from "./listItems";
-import AddCertificate from "./certificates/AddCertificate";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../providers/Auth.context";
-import MainRoutes from "./MainRoutes";
 import MainContent from "./MainContent";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © Qardless "}
-      {new Date().getFullYear()}
-    </Typography>
-  );
-}
 
 const drawerWidth = 240;
 
@@ -175,16 +158,7 @@ function DashboardContent() {
           <Toolbar />
 
           {/* Main Content */}
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            {/* TESTING - Ethan, Add certificate and Courses components. You need to use only one at a time, so comment and uncomment the components below. I have not set up routing yet so this is the workaround */}
-            {/* <AddCertificate /> */}
-
-            {/* <Courses /> */}
-            <MainContent/>
-            <MainRoutes />
-
-            <Copyright sx={{ pt: 4 }} />
-          </Container>
+          <MainContent />
           {/* Main Content */}
         </Box>
       </Box>
