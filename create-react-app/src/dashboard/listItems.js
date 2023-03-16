@@ -6,9 +6,8 @@ import ListItemText from "@mui/material/ListItemText";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SchoolIcon from "@mui/icons-material/School";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ListItem } from "@mui/material";
-
 
 export default function ListItems() {
   return (

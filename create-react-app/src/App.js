@@ -8,6 +8,8 @@ import NotFound from "./generics/NotFound";
 import Unauthorized from "./generics/Unauthorized";
 import { RequireAuth } from "./providers/Auth.context";
 import MainContent from "./dashboard/MainContent";
+import Courses from "./dashboard/courses/Courses";
+import AddCertificate from "./dashboard/certificates/AddCertificate";
 
 export default function App() {
   return (
@@ -15,12 +17,17 @@ export default function App() {
       <AuthProvider>
         <BrowserRouter>
           <Routes>
-          <Route path="/" element={<Login />} />
+            <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
             <Route path="*" element={<NotFound />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
             <Route element={<RequireAuth />}>
-              <Route path="/dashboard/*" element={<Dashboard />} />
+              <Route path="/dashboard" element={<Dashboard />}>
+                <Route element={<MainContent />}>
+                  <Route path="courses" element={<Courses />} />
+                  <Route path="certificates" element={<AddCertificate />} />
+                </Route>
+              </Route>
             </Route>
           </Routes>
         </BrowserRouter>
