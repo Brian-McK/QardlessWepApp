@@ -13,20 +13,6 @@ import { useNavigate } from "react-router-dom";
 import { useLoginEmployeeMutation } from "../../api/services/login";
 import { SharedSnackbarContext } from "../../providers/SharedSnackbar.context";
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © Qardless "}
-      {new Date().getFullYear()}
-    </Typography>
-  );
-}
-
 const theme = createTheme();
 
 const validationSchemaLoginUser = yup.object({
@@ -159,8 +145,6 @@ export default function Login() {
           </form>
         </Grid>
       </Grid>
-
-      <Copyright sx={{ mt: 8, mb: 4 }} />
     </ThemeProvider>
   );
 }
