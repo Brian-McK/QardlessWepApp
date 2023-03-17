@@ -8,8 +8,49 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import SchoolIcon from "@mui/icons-material/School";
 import { Link } from "react-router-dom";
 import { ListItem } from "@mui/material";
+import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../providers/Auth.context";
+import { useLogoutEmployeeMutation } from "../api/services/employees";
+import { SharedSnackbarContext } from "../providers/SharedSnackbar.context";
 
 export default function ListItems() {
+  const { user, setUser } = useAuth();
+  const navigate = useNavigate();
+
+  const snackBarContext = React.useContext(SharedSnackbarContext);
+
+  const [logoutEmployee, { data, status, isLoading }] =
+    useLogoutEmployeeMutation();
+
+  const logout = useCallback(
+    (e) => {
+      e.preventDefault();
+
+      const userId = {
+        id: user.id,
+      };
+
+      logoutEmployee(userId)
+        .unwrap()
+        .then((data) => {
+          if (data.isLoggedIn == false) {
+            setUser(null);
+            navigate("/");
+            snackBarContext.openSnackbar(
+              `Bye bye, Logged out successfully!`
+            );
+          }
+        })
+        .catch((error) => {
+          snackBarContext.openSnackbar(
+            `Ooops, something went wrong with logging out!`
+          );
+        });
+    },
+    [setUser]
+  );
+
   return (
     <>
       <ListItem component={Link} to="/dashboard/overview">
@@ -39,7 +80,7 @@ export default function ListItems() {
         </ListItemButton>
       </ListItem>
 
-      <ListItem>
+      <ListItem onClick={logout}>
         <ListItemButton>
           <ListItemIcon>
             <LogoutIcon />

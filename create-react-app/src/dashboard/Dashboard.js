@@ -69,22 +69,12 @@ const Drawer = styled(MuiDrawer, {
 const mdTheme = createTheme();
 
 function DashboardContent() {
-  const { user, setUser } = useAuth();
-  const navigate = useNavigate();
+  const { user } = useAuth();
 
   const [open, setOpen] = useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
-  const logout = useCallback(
-    (e) => {
-      e.preventDefault();
-      setUser(null);
-      navigate("/");
-    },
-    [setUser]
-  );
 
   return (
     <ThemeProvider theme={mdTheme}>

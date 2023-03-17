@@ -160,8 +160,6 @@ export default function Login() {
         </Grid>
       </Grid>
 
-      <pre>{JSON.stringify(result, null, 2)}</pre>
-
       <Copyright sx={{ mt: 8, mb: 4 }} />
     </ThemeProvider>
   );
