@@ -56,7 +56,7 @@ export default function CoursesTable() {
   return (
     <>
       <Grid container justifyContent={"center"}>
-        <Grid item xs={12} md={9}>
+        <Grid item xs={12}>
           <Paper
             sx={{
               p: 2,
