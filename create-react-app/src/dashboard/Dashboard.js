@@ -11,36 +11,12 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { mainListItems } from "./listItems";
-import Chart from "./Chart";
-import Deposits from "./Deposits";
-import Orders from "./Orders";
-import Overview from "./Overview";
-import Title from "./Title";
-import AddCertificate from "./certificates/AddCertificate";
-import ManageCertificates from "./certificates/ManageCertificates";
-import Courses from "./courses/Courses";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © Qardless "}
-      {new Date().getFullYear()}
-    </Typography>
-  );
-}
+import ListItems from "./listItems";
+import { useAuth } from "../providers/Auth.context";
+import MainContent from "./MainContent";
 
 const drawerWidth = 240;
 
@@ -91,18 +67,12 @@ const Drawer = styled(MuiDrawer, {
 const mdTheme = createTheme();
 
 function DashboardContent() {
+  const { user } = useAuth();
+
   const [open, setOpen] = useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
-  React.useLayoutEffect(() => {
-    const sideNavSubHeaders = document.querySelectorAll(".side-nav-sub-header");
-
-    sideNavSubHeaders.forEach((item) => {
-      !open ? (item.style.display = "none") : (item.style.display = "block");
-    });
-  }, [open]);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -133,7 +103,7 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Qardless Employee Business Name
+              {user.name}
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -157,7 +127,7 @@ function DashboardContent() {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {mainListItems}
+            <ListItems />
             <Divider sx={{ my: 1 }} />
           </List>
         </Drawer>
@@ -176,17 +146,7 @@ function DashboardContent() {
           <Toolbar />
 
           {/* Main Content */}
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            {/* <Overview /> */}
-
-            {/* TESTING - Ethan, Add certificate and Courses components. You need to use only one at a time, so comment and uncomment the components below. I have not set up routing yet so this is the workaround */}
-            <AddCertificate />
-
-            {/* <Courses /> */}
-
-            
-            <Copyright sx={{ pt: 4 }} />
-          </Container>
+          <MainContent />
           {/* Main Content */}
         </Box>
       </Box>

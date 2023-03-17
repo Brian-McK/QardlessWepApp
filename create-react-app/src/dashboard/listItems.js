@@ -1,58 +1,91 @@
 import * as React from "react";
-import ListSubheader from "@mui/material/ListSubheader";
+import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import HomeIcon from "@mui/icons-material/Home";
-import NoteAddIcon from "@mui/icons-material/NoteAdd";
-import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
-import ListIcon from "@mui/icons-material/List";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import LogoutIcon from "@mui/icons-material/Logout";
+import SchoolIcon from "@mui/icons-material/School";
+import { Link } from "react-router-dom";
+import { ListItem } from "@mui/material";
+import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../providers/Auth.context";
+import { useLogoutEmployeeMutation } from "../api/services/employees";
+import { SharedSnackbarContext } from "../providers/SharedSnackbar.context";
 
-export const mainListItems = (
-  <React.Fragment>
-    {/* Overview */}
-    <ListItemButton>
-      <ListItemIcon>
-        <HomeIcon />
-      </ListItemIcon>
-      <ListItemText primary="Overview" />
-    </ListItemButton>
-    {/* Overview */}
+export default function ListItems() {
+  const { user, setUser } = useAuth();
+  const navigate = useNavigate();
 
-    {/* Courses */}
-    <ListSubheader component="div" inset className="side-nav-sub-header">
-      Manage Courses
-    </ListSubheader>
-    <ListItemButton>
-      <ListItemIcon>
-        <ListIcon />
-      </ListItemIcon>
-      <ListItemText primary="View Courses" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <NoteAddIcon />
-      </ListItemIcon>
-      <ListItemText primary="Add Course" />
-    </ListItemButton>
-    {/* Courses */}
+  const snackBarContext = React.useContext(SharedSnackbarContext);
 
-    {/* Certificates */}
-    <ListSubheader component="div" inset className="side-nav-sub-header">
-      Manage Certificates
-    </ListSubheader>
-    <ListItemButton>
-      <ListItemIcon>
-        <ListIcon />
-      </ListItemIcon>
-      <ListItemText primary="View Certificates" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <AssignmentTurnedInIcon />
-      </ListItemIcon>
-      <ListItemText primary="Add Certificate" />
-    </ListItemButton>
-    {/* Certificates */}
-  </React.Fragment>
-);
+  const [logoutEmployee, { data, status, isLoading }] =
+    useLogoutEmployeeMutation();
+
+  const logout = useCallback(
+    (e) => {
+      e.preventDefault();
+
+      const userId = {
+        id: user.id,
+      };
+
+      logoutEmployee(userId)
+        .unwrap()
+        .then((data) => {
+          if (data.isLoggedIn == false) {
+            setUser(null);
+            navigate("/");
+            snackBarContext.openSnackbar(`Bye bye, Logged out successfully!`);
+          }
+        })
+        .catch((error) => {
+          snackBarContext.openSnackbar(
+            `Ooops, something went wrong with logging out!`
+          );
+        });
+    },
+    [setUser]
+  );
+
+  return (
+    <>
+      <ListItem button={true} component={Link} to="/dashboard/overview">
+        <ListItemButton>
+          <ListItemIcon>
+            <BarChartIcon />
+          </ListItemIcon>
+          <ListItemText primary="Overview" />
+        </ListItemButton>
+      </ListItem>
+
+      <ListItem button={true} component={Link} to="/dashboard/courses">
+        <ListItemButton>
+          <ListItemIcon>
+            <SchoolIcon />
+          </ListItemIcon>
+          <ListItemText primary="Courses" />
+        </ListItemButton>
+      </ListItem>
+
+      <ListItem button={true} component={Link} to="/dashboard/certificates">
+        <ListItemButton>
+          <ListItemIcon>
+            <WorkspacePremiumIcon />
+          </ListItemIcon>
+          <ListItemText primary="Certificates" />
+        </ListItemButton>
+      </ListItem>
+
+      <ListItem button={true} onClick={logout}>
+        <ListItemButton>
+          <ListItemIcon>
+            <LogoutIcon />
+          </ListItemIcon>
+          <ListItemText primary="Logout" />
+        </ListItemButton>
+      </ListItem>
+    </>
+  );
+}
