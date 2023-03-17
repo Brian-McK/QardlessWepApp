@@ -51,7 +51,12 @@ export default function ListItems() {
 
   return (
     <>
-      <ListItem button={true} component={Link} to="/dashboard/overview">
+      <ListItem
+        sx={{ paddingLeft: "6px" }}
+        button={true}
+        component={Link}
+        to="/dashboard/overview"
+      >
         <ListItemButton>
           <ListItemIcon>
             <BarChartIcon />
@@ -60,7 +65,12 @@ export default function ListItems() {
         </ListItemButton>
       </ListItem>
 
-      <ListItem button={true} component={Link} to="/dashboard/courses">
+      <ListItem
+        sx={{ paddingLeft: "6px" }}
+        button={true}
+        component={Link}
+        to="/dashboard/courses"
+      >
         <ListItemButton>
           <ListItemIcon>
             <SchoolIcon />
@@ -69,7 +79,12 @@ export default function ListItems() {
         </ListItemButton>
       </ListItem>
 
-      <ListItem button={true} component={Link} to="/dashboard/certificates">
+      <ListItem
+        sx={{ paddingLeft: "6px" }}
+        button={true}
+        component={Link}
+        to="/dashboard/certificates"
+      >
         <ListItemButton>
           <ListItemIcon>
             <WorkspacePremiumIcon />
@@ -78,7 +93,12 @@ export default function ListItems() {
         </ListItemButton>
       </ListItem>
 
-      <ListItem button={true} component={Link} to="/dashboard/manage-certificates">
+      <ListItem
+        sx={{ paddingLeft: "6px" }}
+        button={true}
+        component={Link}
+        to="/dashboard/manage-certificates"
+      >
         <ListItemButton>
           <ListItemIcon>
             <WorkspacePremiumIcon />
@@ -87,7 +107,7 @@ export default function ListItems() {
         </ListItemButton>
       </ListItem>
 
-      <ListItem button={true} onClick={logout}>
+      <ListItem sx={{ paddingLeft: "6px" }} button={true} onClick={logout}>
         <ListItemButton>
           <ListItemIcon>
             <LogoutIcon />
