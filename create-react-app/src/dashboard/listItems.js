@@ -78,6 +78,15 @@ export default function ListItems() {
         </ListItemButton>
       </ListItem>
 
+      <ListItem button={true} component={Link} to="/dashboard/manage-certificates">
+        <ListItemButton>
+          <ListItemIcon>
+            <WorkspacePremiumIcon />
+          </ListItemIcon>
+          <ListItemText primary="Manage Certificates" />
+        </ListItemButton>
+      </ListItem>
+
       <ListItem button={true} onClick={logout}>
         <ListItemButton>
           <ListItemIcon>

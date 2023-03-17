@@ -10,6 +10,7 @@ import { RequireAuth } from "./providers/Auth.context";
 import MainContent from "./dashboard/MainContent";
 import Courses from "./dashboard/courses/Courses";
 import AddCertificate from "./dashboard/certificates/AddCertificate";
+import ManageCertificates from "./dashboard/certificates/ManageCertificates";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
                 <Route element={<MainContent />}>
                   <Route path="courses" element={<Courses />} />
                   <Route path="certificates" element={<AddCertificate />} />
+                  <Route path="manage-certificates" element={<ManageCertificates />} />
                 </Route>
               </Route>
             </Route>
