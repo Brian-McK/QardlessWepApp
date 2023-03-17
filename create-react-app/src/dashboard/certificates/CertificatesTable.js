@@ -7,7 +7,7 @@ import {
   GridToolbarContainer,
   GridToolbarExport,
 } from "@mui/x-data-grid";
-import { useGetAllCoursesByBusinessIdQuery } from "../../api/services/courses";
+import { useGetAllCertificatesByBusinessIdQuery } from "../../api/services/certificates";
 
 function CustomToolbar() {
   return (
@@ -26,7 +26,9 @@ export default function CertificatesTable() {
     isLoading,
     isError,
     isSuccess,
-  } = useGetAllCoursesByBusinessIdQuery("358c4557-c65c-4c76-49d7-08db1a8071a9");
+  } = useGetAllCertificatesByBusinessIdQuery(
+    "358c4557-c65c-4c76-49d7-08db1a8071a9"
+  );
 
   const dataGridDataCols = [
     { field: "id", headerName: "Id", width: 150 },
@@ -55,7 +57,7 @@ export default function CertificatesTable() {
   return (
     <>
       <Grid container justifyContent={"center"}>
-        <Grid item xs={12} md={9}>
+        <Grid item xs={12}>
           <Paper
             sx={{
               p: 2,
@@ -63,9 +65,9 @@ export default function CertificatesTable() {
               flexDirection: "column",
             }}
           >
-            <h4>Courses</h4>
+            <h4>Certificates</h4>
             {/* Table Start */}
-            <Box sx={{ height: 400, width: "100%" }}>
+            <Box sx={{ height: 500, width: "100%" }}>
               <DataGrid
                 loading={isLoading}
                 rows={data}
