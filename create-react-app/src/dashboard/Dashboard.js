@@ -15,8 +15,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import ListItems from "./listItems";
-import { useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../providers/Auth.context";
 import MainContent from "./MainContent";
 

@@ -37,9 +37,7 @@ export default function ListItems() {
           if (data.isLoggedIn == false) {
             setUser(null);
             navigate("/");
-            snackBarContext.openSnackbar(
-              `Bye bye, Logged out successfully!`
-            );
+            snackBarContext.openSnackbar(`Bye bye, Logged out successfully!`);
           }
         })
         .catch((error) => {
@@ -53,7 +51,7 @@ export default function ListItems() {
 
   return (
     <>
-      <ListItem component={Link} to="/dashboard/overview">
+      <ListItem button={true} component={Link} to="/dashboard/overview">
         <ListItemButton>
           <ListItemIcon>
             <BarChartIcon />
@@ -62,7 +60,7 @@ export default function ListItems() {
         </ListItemButton>
       </ListItem>
 
-      <ListItem component={Link} to="/dashboard/courses">
+      <ListItem button={true} component={Link} to="/dashboard/courses">
         <ListItemButton>
           <ListItemIcon>
             <SchoolIcon />
@@ -71,7 +69,7 @@ export default function ListItems() {
         </ListItemButton>
       </ListItem>
 
-      <ListItem component={Link} to="/dashboard/certificates">
+      <ListItem button={true} component={Link} to="/dashboard/certificates">
         <ListItemButton>
           <ListItemIcon>
             <WorkspacePremiumIcon />
@@ -80,7 +78,7 @@ export default function ListItems() {
         </ListItemButton>
       </ListItem>
 
-      <ListItem onClick={logout}>
+      <ListItem button={true} onClick={logout}>
         <ListItemButton>
           <ListItemIcon>
             <LogoutIcon />
