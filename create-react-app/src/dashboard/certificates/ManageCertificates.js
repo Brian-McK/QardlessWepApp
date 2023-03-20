@@ -1,28 +1,19 @@
 import * as React from "react";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
+import { Stack } from "@mui/system";
+import { Divider } from "@mui/material";
+import CertificatesTable from "./CertificatesTable";
+import Title from "../Title";
 
 export default function ManageCertificates() {
   return (
     <>
       <Title>Manage Certificates</Title>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={12} lg={12}>
-          <Paper
-            sx={{
-              p: 2,
-              display: "flex",
-              flexDirection: "column",
-              height: 240,
-            }}
-          >
-            <Typography variant="h2" gutterBottom>
-              Manage certificates View
-            </Typography>
-          </Paper>
-        </Grid>
-      </Grid>
+      <Stack
+        spacing={2}
+        divider={<Divider orientation="horizontal" flexItem />}
+      >
+        <CertificatesTable />
+      </Stack>
     </>
   );
 }

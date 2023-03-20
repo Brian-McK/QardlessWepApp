@@ -17,8 +17,9 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import ListItems from "./listItems";
 import { useAuth } from "../providers/Auth.context";
 import MainContent from "./MainContent";
+import DrawerInfo from "./DrawerInfo";
 
-const drawerWidth = 240;
+const drawerWidth = 260;
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -130,6 +131,7 @@ function DashboardContent() {
             <ListItems />
             <Divider sx={{ my: 1 }} />
           </List>
+          <DrawerInfo isDrawerOpen={open} />
         </Drawer>
         <Box
           component="main"

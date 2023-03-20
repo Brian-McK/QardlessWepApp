@@ -7,12 +7,8 @@ export const certificatesApi = createApi({
   }),
   tagTypes: ["Certificates"],
   endpoints: (builder) => ({
-    getAllCertificates: builder.query({
-      query: () => `Certificates`,
-      providesTags: ["Certificates"],
-    }),
-    getAllCertificatesByEndUserId: builder.query({
-      query: (endUserId) => `endusers/${endUserId}/certificates/`,
+    getAllCertificatesByBusinessId: builder.query({
+      query: (businessId) => `businesses/${businessId}/certificates`,
       providesTags: ["Certificates"],
     }),
     getCertificateById: builder.query({
@@ -32,7 +28,6 @@ export const certificatesApi = createApi({
 
 export const {
   useGetCertificateByIdQuery,
-  useGetAllCertificatesByEndUserIdQuery,
-  useGetAllCertificatesQuery,
+  useGetAllCertificatesByBusinessIdQuery,
   useAddCertificateMutation,
 } = certificatesApi;
