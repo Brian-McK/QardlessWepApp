@@ -98,7 +98,9 @@ export default function CertificatesTable() {
 
   const openPdfHandler = React.useCallback(
     (params) => () => {
-      console.log(params);
+      const pdfWindow = window.open();
+
+      pdfWindow.location.href = params.row.pdfUrl;
     },
     []
   );
@@ -151,7 +153,7 @@ export default function CertificatesTable() {
       width: 100,
       getActions: (params) => [
         <GridActionsCellItem
-          icon={<PictureAsPdfIcon sx={{ color: "#57c962" }} />}
+          icon={<PictureAsPdfIcon sx={{ color: "#2c8535" }} />}
           label="pdf"
           onClick={openPdfHandler(params)}
         />,
