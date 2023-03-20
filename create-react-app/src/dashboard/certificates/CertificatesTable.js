@@ -67,14 +67,9 @@ export default function CertificatesTable() {
 
   const toggleFreezeCertificateHandler = React.useCallback(
     (params) => () => {
-      console.log(params);
-
       if (params.row.isFrozen) {
-        console.log("unfreeze called");
-
         unfreezeCertificate(params.row.id);
       } else {
-        console.log("freeze called");
         freezeCertificate(params.row.id);
       }
     },
@@ -106,6 +101,14 @@ export default function CertificatesTable() {
     []
   );
 
+  function getDaysTillExpiry(params) {
+    const startDate = dayjs(params.row.course.courseDate);
+
+    const expiryDate = dayjs(params.row.course.expiry);
+
+    return `${startDate.diff(expiryDate, "day")} days`;
+  }
+
   const dataGridDataCols = [
     {
       field: "certNumber",
@@ -125,14 +128,23 @@ export default function CertificatesTable() {
       headerName: "Course Date",
       description: "The date of when the course was held",
       width: 150,
-      valueGetter: (params) => `${dayjs(params.row.course.courseDate).format('DD/MM/YYYY')}`,
+      valueGetter: (params) =>
+        `${dayjs(params.row.course.courseDate).format("DD/MM/YYYY")}`,
     },
     {
       field: "expiry",
       headerName: "Course Expiry",
       description: "The date of when the course expires",
       width: 150,
-      valueGetter: (params) => `${dayjs(params.row.course.expiry).format('DD/MM/YYYY')}`,
+      valueGetter: (params) =>
+        `${dayjs(params.row.course.expiry).format("DD/MM/YYYY")}`,
+    },
+    {
+      field: "expiresDays",
+      headerName: "Expires in",
+      description: "The number of days in which the certificate will expire",
+      width: 150,
+      valueGetter: getDaysTillExpiry,
     },
     {
       field: "isFrozen",
