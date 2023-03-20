@@ -56,7 +56,7 @@ export default function CertificatesTable() {
     }
   }, [response]);
 
-  const freezeCertificate = React.useCallback(
+  const toggleFreezeCertificateHandler = React.useCallback(
     (id) => () => {
       console.log(id);
     },
@@ -117,7 +117,7 @@ export default function CertificatesTable() {
         <GridActionsCellItem
           icon={<AcUnitIcon />}
           label="Freeze"
-          onClick={freezeCertificate(params.id)}
+          onClick={toggleFreezeCertificateHandler(params.id)}
         />,
       ],
     },

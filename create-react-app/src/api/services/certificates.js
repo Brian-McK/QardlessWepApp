@@ -30,6 +30,20 @@ export const certificatesApi = createApi({
       }),
       invalidatesTags: ["certificates"],
     }),
+    freezeCertificate: builder.mutation({
+      query: (id) => ({
+        url: `certificates/${id}/freeze`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["certificates"],
+    }),
+    unfreezeCertificate: builder.mutation({
+      query: (id) => ({
+        url: `certificates/${id}/unfreeze`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["certificates"],
+    }),
   }),
 });
 
@@ -37,5 +51,7 @@ export const {
   useGetCertificateByIdQuery,
   useGetAllCertificatesByBusinessIdQuery,
   useAddCertificateMutation,
-  useDeleteCertificateMutation
+  useDeleteCertificateMutation,
+  useFreezeCertificateMutation,
+  useUnfreezeCertificateMutation
 } = certificatesApi;
