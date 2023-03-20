@@ -10,8 +10,12 @@ import {
 } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AcUnitIcon from "@mui/icons-material/AcUnit";
-import { useGetAllCertificatesByBusinessIdQuery } from "../../api/services/certificates";
-import { useDeleteCertificateMutation } from "../../api/services/certificates";
+import {
+  useGetAllCertificatesByBusinessIdQuery,
+  useDeleteCertificateMutation,
+  useFreezeCertificateMutation,
+  useUnfreezeCertificateMutation,
+} from "../../api/services/certificates";
 import { useAuth } from "../../providers/Auth.context";
 import { SharedSnackbarContext } from "../../providers/SharedSnackbar.context";
 
@@ -24,8 +28,6 @@ function CustomToolbar() {
 }
 
 export default function CertificatesTable() {
-  // "businessId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-
   const { user } = useAuth();
 
   const snackBarContext = React.useContext(SharedSnackbarContext);
@@ -38,7 +40,12 @@ export default function CertificatesTable() {
     isSuccess,
   } = useGetAllCertificatesByBusinessIdQuery(user.businessId);
 
-  const [deleteCertificate, response] = useDeleteCertificateMutation();
+  const [deleteCertificate, deleteResponse] = useDeleteCertificateMutation();
+
+  const [freezeCertificate, freezeResponse] = useFreezeCertificateMutation();
+
+  const [unfreezeCertificate, unfreezeResponse] =
+    useUnfreezeCertificateMutation();
 
   const deleteCertificateHandler = React.useCallback(
     (id) => () => {
@@ -48,20 +55,45 @@ export default function CertificatesTable() {
   );
 
   React.useLayoutEffect(() => {
-    if (response.isSuccess) {
+    if (deleteResponse.isSuccess) {
       snackBarContext.openSnackbar(`Deleted Successfully!`);
     }
-    if (response.isError) {
+    if (deleteResponse.isError) {
       snackBarContext.openSnackbar(`Problem Deleting that certificate!`);
     }
-  }, [response]);
+  }, [deleteResponse]);
 
   const toggleFreezeCertificateHandler = React.useCallback(
-    (id) => () => {
-      console.log(id);
+    (params) => () => {
+      console.log(params);
+
+      if (params.row.isFrozen) {
+        console.log("unfreeze called");
+
+        unfreezeCertificate(params.row.id);
+      } else {
+        console.log("freeze called");
+        freezeCertificate(params.row.id);
+      }
     },
-    []
+    [data]
   );
+
+  React.useLayoutEffect(() => {
+    if (freezeResponse.isSuccess) {
+      snackBarContext.openSnackbar(`Freeze certificate Successfully!`);
+    }
+    if (freezeResponse.isError) {
+      snackBarContext.openSnackbar(`Problem freezing certificate!`);
+    }
+
+    if (unfreezeResponse.isSuccess) {
+      snackBarContext.openSnackbar(`Unfreeze certificate Successfully!`);
+    }
+    if (unfreezeResponse.isError) {
+      snackBarContext.openSnackbar(`Problem unfreezing certificate!`);
+    }
+  }, [freezeResponse, unfreezeResponse]);
 
   const dataGridDataCols = [
     {
@@ -105,6 +137,7 @@ export default function CertificatesTable() {
     },
     {
       field: "actions",
+      description: "Delete / toggle freeze, unfreeze certificates",
       type: "actions",
       headerName: "Actions",
       width: "80",
@@ -117,7 +150,7 @@ export default function CertificatesTable() {
         <GridActionsCellItem
           icon={<AcUnitIcon />}
           label="Freeze"
-          onClick={toggleFreezeCertificateHandler(params.id)}
+          onClick={toggleFreezeCertificateHandler(params)}
         />,
       ],
     },
