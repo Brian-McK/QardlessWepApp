@@ -19,6 +19,7 @@ import {
 } from "../../api/services/certificates";
 import { useAuth } from "../../providers/Auth.context";
 import { SharedSnackbarContext } from "../../providers/SharedSnackbar.context";
+import dayjs from "dayjs";
 
 function CustomToolbar() {
   return (
@@ -124,14 +125,14 @@ export default function CertificatesTable() {
       headerName: "Course Date",
       description: "The date of when the course was held",
       width: 150,
-      valueGetter: (params) => `${params.row.course.courseDate}`,
+      valueGetter: (params) => `${dayjs(params.row.course.courseDate).format('DD/MM/YYYY')}`,
     },
     {
       field: "expiry",
       headerName: "Course Expiry",
       description: "The date of when the course expires",
       width: 150,
-      valueGetter: (params) => `${params.row.course.expiry}`,
+      valueGetter: (params) => `${dayjs(params.row.course.expiry).format('DD/MM/YYYY')}`,
     },
     {
       field: "isFrozen",
