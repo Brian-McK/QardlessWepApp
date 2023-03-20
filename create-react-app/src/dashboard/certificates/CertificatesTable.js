@@ -8,6 +8,7 @@ import {
   GridToolbarExport,
 } from "@mui/x-data-grid";
 import { useGetAllCertificatesByBusinessIdQuery } from "../../api/services/certificates";
+import { useAuth } from "../../providers/Auth.context";
 
 function CustomToolbar() {
   return (
@@ -20,39 +21,62 @@ function CustomToolbar() {
 export default function CertificatesTable() {
   // "businessId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
 
+  const { user } = useAuth();
+
   const {
     data = [],
     error,
     isLoading,
     isError,
     isSuccess,
-  } = useGetAllCertificatesByBusinessIdQuery(
-    "358c4557-c65c-4c76-49d7-08db1a8071a9"
-  );
+  } = useGetAllCertificatesByBusinessIdQuery(user.businessId);
 
   const dataGridDataCols = [
-    { field: "id", headerName: "Id", width: 150 },
+    {
+      field: "certNumber",
+      headerName: "Cert Number",
+      description: "The certificate number",
+      width: 150,
+    },
     {
       field: "title",
       headerName: "Course Title",
       description: "The title of the course",
-      width: 250,
+      width: 200,
+      valueGetter: (params) => `${params.row.course.title}`,
     },
     {
       field: "courseDate",
       headerName: "Course Date",
       description: "The date of when the course was held",
       width: 150,
+      valueGetter: (params) => `${params.row.course.courseDate}`,
     },
     {
       field: "expiry",
       headerName: "Course Expiry",
       description: "The date of when the course expires",
       width: 150,
+      valueGetter: (params) => `${params.row.course.expiry}`,
+    },
+    {
+      field: "isFrozen",
+      headerName: "Status",
+      description: "Shows wether the certificate is active or frozen",
+      width: 150,
+      valueGetter: (params) => {
+        if (params.row.isFrozen) {
+          return `Frozen`;
+        }
+        return `Active`;
+      },
     },
   ];
 
-  React.useEffect(() => {}, [data]);
+  React.useEffect(() => {
+    console.log(data);
+    console.log(user);
+  }, [data]);
 
   return (
     <>
