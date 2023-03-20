@@ -6,7 +6,10 @@ import {
   DataGrid,
   GridToolbarContainer,
   GridToolbarExport,
+  GridActionsCellItem,
 } from "@mui/x-data-grid";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AcUnitIcon from "@mui/icons-material/AcUnit";
 import { useGetAllCertificatesByBusinessIdQuery } from "../../api/services/certificates";
 import { useAuth } from "../../providers/Auth.context";
 
@@ -30,6 +33,20 @@ export default function CertificatesTable() {
     isError,
     isSuccess,
   } = useGetAllCertificatesByBusinessIdQuery(user.businessId);
+
+  const deleteCertificate = React.useCallback(
+    (id) => () => {
+      console.log(id);
+    },
+    []
+  );
+
+  const freezeCertificate = React.useCallback(
+    (id) => () => {
+      console.log(id);
+    },
+    []
+  );
 
   const dataGridDataCols = [
     {
@@ -70,6 +87,24 @@ export default function CertificatesTable() {
         }
         return `Active`;
       },
+    },
+    {
+      field: "actions",
+      type: "actions",
+      headerName: "Actions",
+      width: "80",
+      getActions: (params) => [
+        <GridActionsCellItem
+          icon={<DeleteIcon />}
+          label="Delete"
+          onClick={deleteCertificate(params.id)}
+        />,
+        <GridActionsCellItem
+          icon={<AcUnitIcon />}
+          label="Freeze"
+          onClick={freezeCertificate(params.id)}
+        />,
+      ],
     },
   ];
 
