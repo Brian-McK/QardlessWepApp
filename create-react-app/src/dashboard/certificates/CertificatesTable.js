@@ -7,6 +7,8 @@ import {
   GridToolbarContainer,
   GridToolbarExport,
   GridActionsCellItem,
+  GridFilterModel,
+  GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AcUnitIcon from "@mui/icons-material/AcUnit";
@@ -23,8 +25,9 @@ import dayjs from "dayjs";
 
 function CustomToolbar() {
   return (
-    <GridToolbarContainer>
+    <GridToolbarContainer sx={{ display: "flex", padding: "24px" }}>
       <GridToolbarExport printOptions={{ disableToolbarButton: true }} />
+      <GridToolbarQuickFilter sx={{ marginLeft: "auto" }} />
     </GridToolbarContainer>
   );
 }
