@@ -11,7 +11,9 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import AcUnitIcon from "@mui/icons-material/AcUnit";
 import { useGetAllCertificatesByBusinessIdQuery } from "../../api/services/certificates";
+import { useDeleteCertificateMutation } from "../../api/services/certificates";
 import { useAuth } from "../../providers/Auth.context";
+import { SharedSnackbarContext } from "../../providers/SharedSnackbar.context";
 
 function CustomToolbar() {
   return (
@@ -26,6 +28,8 @@ export default function CertificatesTable() {
 
   const { user } = useAuth();
 
+  const snackBarContext = React.useContext(SharedSnackbarContext);
+
   const {
     data = [],
     error,
@@ -34,12 +38,23 @@ export default function CertificatesTable() {
     isSuccess,
   } = useGetAllCertificatesByBusinessIdQuery(user.businessId);
 
-  const deleteCertificate = React.useCallback(
+  const [deleteCertificate, response] = useDeleteCertificateMutation();
+
+  const deleteCertificateHandler = React.useCallback(
     (id) => () => {
-      console.log(id);
+      deleteCertificate(id);
     },
-    []
+    [data]
   );
+
+  React.useLayoutEffect(() => {
+    if (response.isSuccess) {
+      snackBarContext.openSnackbar(`Deleted Successfully!`);
+    }
+    if (response.isError) {
+      snackBarContext.openSnackbar(`Problem Deleting that certificate!`);
+    }
+  }, [response]);
 
   const freezeCertificate = React.useCallback(
     (id) => () => {
@@ -80,7 +95,7 @@ export default function CertificatesTable() {
       field: "isFrozen",
       headerName: "Status",
       description: "Shows wether the certificate is active or frozen",
-      width: 150,
+      width: 100,
       valueGetter: (params) => {
         if (params.row.isFrozen) {
           return `Frozen`;
@@ -97,7 +112,7 @@ export default function CertificatesTable() {
         <GridActionsCellItem
           icon={<DeleteIcon />}
           label="Delete"
-          onClick={deleteCertificate(params.id)}
+          onClick={deleteCertificateHandler(params.id)}
         />,
         <GridActionsCellItem
           icon={<AcUnitIcon />}
@@ -108,10 +123,7 @@ export default function CertificatesTable() {
     },
   ];
 
-  React.useEffect(() => {
-    console.log(data);
-    console.log(user);
-  }, [data]);
+  React.useEffect(() => {}, [data]);
 
   return (
     <>
