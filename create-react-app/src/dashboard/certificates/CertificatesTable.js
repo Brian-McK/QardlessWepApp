@@ -10,6 +10,7 @@ import {
 } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AcUnitIcon from "@mui/icons-material/AcUnit";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import {
   useGetAllCertificatesByBusinessIdQuery,
   useDeleteCertificateMutation,
@@ -95,6 +96,13 @@ export default function CertificatesTable() {
     }
   }, [freezeResponse, unfreezeResponse]);
 
+  const openPdfHandler = React.useCallback(
+    (params) => () => {
+      console.log(params);
+    },
+    []
+  );
+
   const dataGridDataCols = [
     {
       field: "certNumber",
@@ -140,17 +148,22 @@ export default function CertificatesTable() {
       description: "Delete / toggle freeze, unfreeze certificates",
       type: "actions",
       headerName: "Actions",
-      width: "80",
+      width: 100,
       getActions: (params) => [
         <GridActionsCellItem
-          icon={<DeleteIcon />}
-          label="Delete"
-          onClick={deleteCertificateHandler(params.id)}
+          icon={<PictureAsPdfIcon sx={{ color: "#57c962" }} />}
+          label="pdf"
+          onClick={openPdfHandler(params)}
         />,
         <GridActionsCellItem
-          icon={<AcUnitIcon />}
+          icon={<AcUnitIcon sx={{ color: "#229ee6" }} />}
           label="Freeze"
           onClick={toggleFreezeCertificateHandler(params)}
+        />,
+        <GridActionsCellItem
+          icon={<DeleteIcon sx={{ color: "#d44848" }} />}
+          label="Delete"
+          onClick={deleteCertificateHandler(params.id)}
         />,
       ],
     },
