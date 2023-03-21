@@ -7,7 +7,7 @@ import {
   GridToolbarContainer,
   GridToolbarExport,
   GridActionsCellItem,
-  GridFilterModel,
+  GridToolbarFilterButton,
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -26,6 +26,7 @@ import dayjs from "dayjs";
 function CustomToolbar() {
   return (
     <GridToolbarContainer sx={{ display: "flex", padding: "24px" }}>
+      <GridToolbarFilterButton />
       <GridToolbarExport printOptions={{ disableToolbarButton: true }} />
       <GridToolbarQuickFilter sx={{ marginLeft: "auto" }} />
     </GridToolbarContainer>
@@ -105,11 +106,13 @@ export default function CertificatesTable() {
   );
 
   function getDaysTillExpiry(params) {
-    const startDate = dayjs(params.row.course.courseDate);
+    console.log(params);
 
-    const expiryDate = dayjs(params.row.course.expiry);
+    const startDate = dayjs(params?.row?.course?.courseDate);
 
-    return `${startDate.diff(expiryDate, "day")} days`;
+    const expiryDate = dayjs(params?.row?.course?.expiry);
+
+    return parseInt(startDate.diff(expiryDate, "day").toString());
   }
 
   const dataGridDataCols = [
@@ -203,25 +206,28 @@ export default function CertificatesTable() {
             <h4>Certificates</h4>
             {/* Table Start */}
             <Box sx={{ height: 500, width: "100%" }}>
-              <DataGrid
-                loading={isLoading}
-                rows={data}
-                columns={dataGridDataCols}
-                autoHeight
-                initialState={{
-                  pagination: {
-                    paginationModel: {
-                      pageSize: 5,
+              {isSuccess && (
+                <DataGrid
+                  loading={isLoading}
+                  rows={data}
+                  getRowId={(row) => row.id}
+                  columns={dataGridDataCols}
+                  autoHeight
+                  initialState={{
+                    pagination: {
+                      paginationModel: {
+                        pageSize: 5,
+                      },
                     },
-                  },
-                }}
-                pageSizeOptions={[5]}
-                rowsPerPageOptions={[5]}
-                checkboxSelection
-                disableSelectionOnClick
-                slots={{ toolbar: CustomToolbar }}
-                experimentalFeatures={{ newEditingApi: true }}
-              />
+                  }}
+                  pageSizeOptions={[5]}
+                  rowsPerPageOptions={[5]}
+                  checkboxSelection
+                  disableSelectionOnClick
+                  slots={{ toolbar: CustomToolbar }}
+                  experimentalFeatures={{ newEditingApi: true }}
+                />
+              )}
             </Box>
             {/* Table End */}
           </Paper>
