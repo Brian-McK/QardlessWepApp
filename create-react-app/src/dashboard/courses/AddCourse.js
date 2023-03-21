@@ -10,6 +10,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { SharedSnackbarContext } from "../../providers/SharedSnackbar.context";
 import { useAddCourseMutation } from "../../api/services/courses";
+import { useAuth } from "../../providers/Auth.context";
 
 const today = dayjs();
 const yesterday = today.subtract(1, "day");
@@ -27,6 +28,8 @@ export default function AddCourse() {
     useAddCourseMutation();
 
   const snackBarContext = React.useContext(SharedSnackbarContext);
+
+  const { user } = useAuth();
 
   // reset form if successfull, display snackbar is successful or not
   React.useEffect(() => {
@@ -49,14 +52,8 @@ export default function AddCourse() {
     },
     validationSchema: validationSchemaAddCourse,
     onSubmit: async (values) => {
-      // "businessId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      // "title": "string",
-      // "courseDate": "string",
-      // "expiry": "string"
-
-      // mocking a business id from database
       const addCoursePayload = {
-        businessId: "358c4557-c65c-4c76-49d7-08db1a8071a9",
+        businessId: user.businessId,
         title: values.courseTitle,
         courseDate: `${values.startDate.format("DD/MM/YYYY")}`,
         expiry: `${values.expiryDate.format("DD/MM/YYYY")}`,

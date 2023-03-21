@@ -36,6 +36,8 @@ function CustomToolbar() {
 export default function CertificatesTable() {
   const { user } = useAuth();
 
+  const now = dayjs();
+
   const snackBarContext = React.useContext(SharedSnackbarContext);
 
   const {
@@ -106,13 +108,10 @@ export default function CertificatesTable() {
   );
 
   function getDaysTillExpiry(params) {
-    console.log(params);
-
-    const startDate = dayjs(params?.row?.course?.courseDate);
 
     const expiryDate = dayjs(params?.row?.course?.expiry);
 
-    return parseInt(startDate.diff(expiryDate, "day").toString());
+    return `${expiryDate.diff(now, "day")} days`;
   }
 
   const dataGridDataCols = [
