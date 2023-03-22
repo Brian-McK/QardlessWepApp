@@ -12,15 +12,16 @@ import { SharedSnackbarContext } from "../../providers/SharedSnackbar.context";
 import { useGetAllCoursesByBusinessIdQuery } from "../../api/services/courses";
 import { useAddCertificateMutation } from "../../api/services/certificates";
 import { useState } from "react";
+import { useAuth } from "../../providers/Auth.context";
 
 export default function AddCertificate() {
   const [addCertificate, result] = useAddCertificateMutation();
 
   const [formReset, setFormReset] = useState(false);
 
-  const { data = [] } = useGetAllCoursesByBusinessIdQuery(
-    "c18a70cb-4226-496a-3e73-08db2303f52c"
-  ); // TESTING - Ethan change value here to the business id that created the course
+  const { user } = useAuth();
+
+  const { data = [] } = useGetAllCoursesByBusinessIdQuery(user.businessId); // TESTING - Ethan change value here to the business id that created the course
 
   const snackBarContext = React.useContext(SharedSnackbarContext);
 

@@ -6,19 +6,39 @@ import {
   DataGrid,
   GridToolbarContainer,
   GridToolbarExport,
+  GridActionsCellItem,
+  GridToolbarFilterButton,
+  GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
-import { useGetAllCertificatesByBusinessIdQuery } from "../../api/services/certificates";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AcUnitIcon from "@mui/icons-material/AcUnit";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import {
+  useGetAllCertificatesByBusinessIdQuery,
+  useDeleteCertificateMutation,
+  useFreezeCertificateMutation,
+  useUnfreezeCertificateMutation,
+} from "../../api/services/certificates";
+import { useAuth } from "../../providers/Auth.context";
+import { SharedSnackbarContext } from "../../providers/SharedSnackbar.context";
+import dayjs from "dayjs";
 
 function CustomToolbar() {
   return (
-    <GridToolbarContainer>
+    <GridToolbarContainer sx={{ display: "flex", padding: "24px" }}>
+      <GridToolbarFilterButton />
       <GridToolbarExport printOptions={{ disableToolbarButton: true }} />
+      <GridToolbarQuickFilter sx={{ marginLeft: "auto" }} />
     </GridToolbarContainer>
   );
 }
 
 export default function CertificatesTable() {
-  // "businessId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  const { user } = useAuth();
+
+  const now = dayjs();
+
+  const snackBarContext = React.useContext(SharedSnackbarContext);
 
   const {
     data = [],
@@ -26,29 +46,146 @@ export default function CertificatesTable() {
     isLoading,
     isError,
     isSuccess,
-  } = useGetAllCertificatesByBusinessIdQuery(
-    "358c4557-c65c-4c76-49d7-08db1a8071a9"
+  } = useGetAllCertificatesByBusinessIdQuery(user.businessId);
+
+  const [deleteCertificate, deleteResponse] = useDeleteCertificateMutation();
+
+  const [freezeCertificate, freezeResponse] = useFreezeCertificateMutation();
+
+  const [unfreezeCertificate, unfreezeResponse] =
+    useUnfreezeCertificateMutation();
+
+  const deleteCertificateHandler = React.useCallback(
+    (id) => () => {
+      deleteCertificate(id);
+    },
+    [data]
   );
 
+  React.useLayoutEffect(() => {
+    if (deleteResponse.isSuccess) {
+      snackBarContext.openSnackbar(`Deleted Successfully!`);
+    }
+    if (deleteResponse.isError) {
+      snackBarContext.openSnackbar(`Problem Deleting that certificate!`);
+    }
+  }, [deleteResponse]);
+
+  const toggleFreezeCertificateHandler = React.useCallback(
+    (params) => () => {
+      if (params.row.isFrozen) {
+        unfreezeCertificate(params.row.id);
+      } else {
+        freezeCertificate(params.row.id);
+      }
+    },
+    [data]
+  );
+
+  React.useLayoutEffect(() => {
+    if (freezeResponse.isSuccess) {
+      snackBarContext.openSnackbar(`Freeze certificate Successfully!`);
+    }
+    if (freezeResponse.isError) {
+      snackBarContext.openSnackbar(`Problem freezing certificate!`);
+    }
+
+    if (unfreezeResponse.isSuccess) {
+      snackBarContext.openSnackbar(`Unfreeze certificate Successfully!`);
+    }
+    if (unfreezeResponse.isError) {
+      snackBarContext.openSnackbar(`Problem unfreezing certificate!`);
+    }
+  }, [freezeResponse, unfreezeResponse]);
+
+  const openPdfHandler = React.useCallback(
+    (params) => () => {
+      const pdfWindow = window.open();
+
+      pdfWindow.location.href = params.row.pdfUrl;
+    },
+    []
+  );
+
+  function getDaysTillExpiry(params) {
+
+    const expiryDate = dayjs(params?.row?.course?.expiry);
+
+    return `${expiryDate.diff(now, "day")} days`;
+  }
+
   const dataGridDataCols = [
-    { field: "id", headerName: "Id", width: 150 },
+    {
+      field: "certNumber",
+      headerName: "Cert Number",
+      description: "The certificate number",
+      width: 150,
+    },
     {
       field: "title",
       headerName: "Course Title",
       description: "The title of the course",
-      width: 250,
+      width: 200,
+      valueGetter: (params) => `${params.row.course.title}`,
     },
     {
       field: "courseDate",
       headerName: "Course Date",
       description: "The date of when the course was held",
       width: 150,
+      valueGetter: (params) =>
+        `${dayjs(params.row.course.courseDate).format("DD/MM/YYYY")}`,
     },
     {
       field: "expiry",
       headerName: "Course Expiry",
       description: "The date of when the course expires",
       width: 150,
+      valueGetter: (params) =>
+        `${dayjs(params.row.course.expiry).format("DD/MM/YYYY")}`,
+    },
+    {
+      field: "expiresDays",
+      headerName: "Expires in",
+      description: "The number of days in which the certificate will expire",
+      width: 150,
+      valueGetter: getDaysTillExpiry,
+    },
+    {
+      field: "isFrozen",
+      headerName: "Status",
+      description: "Shows wether the certificate is active or frozen",
+      width: 100,
+      valueGetter: (params) => {
+        if (params.row.isFrozen) {
+          return `Frozen`;
+        }
+        return `Active`;
+      },
+    },
+    {
+      field: "actions",
+      description: "Delete / toggle freeze, unfreeze certificates",
+      type: "actions",
+      headerName: "Actions",
+      width: 100,
+      getActions: (params) => [
+        <GridActionsCellItem
+          icon={<PictureAsPdfIcon sx={{ color: "#2c8535" }} />}
+          label="pdf"
+          onClick={openPdfHandler(params)}
+        />,
+        <GridActionsCellItem
+          icon={<AcUnitIcon sx={{ color: "#229ee6" }} />}
+          label="Freeze"
+          onClick={toggleFreezeCertificateHandler(params)}
+        />,
+        <GridActionsCellItem
+          icon={<DeleteIcon sx={{ color: "#d44848" }} />}
+          label="Delete"
+          onClick={deleteCertificateHandler(params.id)}
+        />,
+      ],
     },
   ];
 
@@ -68,25 +205,28 @@ export default function CertificatesTable() {
             <h4>Certificates</h4>
             {/* Table Start */}
             <Box sx={{ height: 500, width: "100%" }}>
-              <DataGrid
-                loading={isLoading}
-                rows={data}
-                columns={dataGridDataCols}
-                autoHeight
-                initialState={{
-                  pagination: {
-                    paginationModel: {
-                      pageSize: 5,
+              {isSuccess && (
+                <DataGrid
+                  loading={isLoading}
+                  rows={data}
+                  getRowId={(row) => row.id}
+                  columns={dataGridDataCols}
+                  autoHeight
+                  initialState={{
+                    pagination: {
+                      paginationModel: {
+                        pageSize: 5,
+                      },
                     },
-                  },
-                }}
-                pageSizeOptions={[5]}
-                rowsPerPageOptions={[5]}
-                checkboxSelection
-                disableSelectionOnClick
-                slots={{ toolbar: CustomToolbar }}
-                experimentalFeatures={{ newEditingApi: true }}
-              />
+                  }}
+                  pageSizeOptions={[5]}
+                  rowsPerPageOptions={[5]}
+                  checkboxSelection
+                  disableSelectionOnClick
+                  slots={{ toolbar: CustomToolbar }}
+                  experimentalFeatures={{ newEditingApi: true }}
+                />
+              )}
             </Box>
             {/* Table End */}
           </Paper>

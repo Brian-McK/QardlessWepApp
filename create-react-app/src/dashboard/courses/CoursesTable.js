@@ -9,6 +9,8 @@ import {
   GridCsvExportOptions,
 } from "@mui/x-data-grid";
 import { useGetAllCoursesByBusinessIdQuery } from "../../api/services/courses";
+import dayjs from "dayjs";
+import { useAuth } from "../../providers/Auth.context";
 
 function CustomToolbar() {
   return (
@@ -19,7 +21,10 @@ function CustomToolbar() {
 }
 
 export default function CoursesTable() {
-  // "businessId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+
+  const { user } = useAuth();
+
+  console.log(user);
 
   const {
     data = [],
@@ -27,10 +32,9 @@ export default function CoursesTable() {
     isLoading,
     isError,
     isSuccess,
-  } = useGetAllCoursesByBusinessIdQuery("358c4557-c65c-4c76-49d7-08db1a8071a9");
+  } = useGetAllCoursesByBusinessIdQuery(user.businessId);
 
   const dataGridDataCols = [
-    { field: "id", headerName: "Id", width: 150 },
     {
       field: "title",
       headerName: "Course Title",
@@ -42,16 +46,22 @@ export default function CoursesTable() {
       headerName: "Course Date",
       description: "The date of when the course was held",
       width: 150,
+      valueGetter: (params) =>
+        `${dayjs(params.row.courseDate).format("DD/MM/YYYY")}`
     },
     {
       field: "expiry",
       headerName: "Course Expiry",
       description: "The date of when the course expires",
       width: 150,
+      valueGetter: (params) =>
+        `${dayjs(params.row.expiry).format("DD/MM/YYYY")}`
     },
   ];
 
-  React.useEffect(() => {}, [data]);
+  React.useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   return (
     <>

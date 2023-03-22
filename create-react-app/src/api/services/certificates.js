@@ -5,15 +5,15 @@ export const certificatesApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://localhost:40443/",
   }),
-  tagTypes: ["Certificates"],
+  tagTypes: ["certificates"],
   endpoints: (builder) => ({
     getAllCertificatesByBusinessId: builder.query({
       query: (businessId) => `businesses/${businessId}/certificates`,
-      providesTags: ["Certificates"],
+      providesTags: ["certificates"],
     }),
     getCertificateById: builder.query({
       query: (id) => `certificates/${id}`,
-      providesTags: ["Certificates"],
+      providesTags: ["certificates"],
     }),
     addCertificate: builder.mutation({
       query: (body) => ({
@@ -21,7 +21,28 @@ export const certificatesApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Certificates"],
+      invalidatesTags: ["certificates"],
+    }),
+    deleteCertificate: builder.mutation({
+      query: (id) => ({
+        url: `certificates/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["certificates"],
+    }),
+    freezeCertificate: builder.mutation({
+      query: (id) => ({
+        url: `certificates/${id}/freeze`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["certificates"],
+    }),
+    unfreezeCertificate: builder.mutation({
+      query: (id) => ({
+        url: `certificates/${id}/unfreeze`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["certificates"],
     }),
   }),
 });
@@ -30,4 +51,7 @@ export const {
   useGetCertificateByIdQuery,
   useGetAllCertificatesByBusinessIdQuery,
   useAddCertificateMutation,
+  useDeleteCertificateMutation,
+  useFreezeCertificateMutation,
+  useUnfreezeCertificateMutation
 } = certificatesApi;
