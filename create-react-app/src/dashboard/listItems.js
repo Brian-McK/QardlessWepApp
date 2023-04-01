@@ -13,24 +13,29 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../providers/Auth.context";
 import { useLogoutEmployeeMutation } from "../api/services/employees";
 import { SharedSnackbarContext } from "../providers/SharedSnackbar.context";
+import { useDialog } from "../providers/Dialog.context";
 
 export default function ListItems() {
   const { user, setUser } = useAuth();
   const navigate = useNavigate();
-
+  const showDialog = useDialog();
   const snackBarContext = React.useContext(SharedSnackbarContext);
 
   const [logoutEmployee, { data, status, isLoading }] =
     useLogoutEmployeeMutation();
 
-  const logout = useCallback(
-    (e) => {
-      e.preventDefault();
+  const handleConfirmLogout = async (e) => {
+    e.preventDefault();
 
-      const userId = {
-        id: user.id,
-      };
+    const userId = {
+      id: user.id,
+    };
 
+    const confirmed = await showDialog({
+      title: `Logout`,
+      message: `Are you sure you want to logout ${user.name}?`,
+    });
+    if (confirmed) {
       logoutEmployee(userId)
         .unwrap()
         .then((data) => {
@@ -45,9 +50,8 @@ export default function ListItems() {
             `Ooops, something went wrong with logging out!`
           );
         });
-    },
-    [setUser]
-  );
+    }
+  };
 
   return (
     <>
@@ -107,7 +111,11 @@ export default function ListItems() {
         </ListItemButton>
       </ListItem>
 
-      <ListItem sx={{ paddingLeft: "6px" }} button={true} onClick={logout}>
+      <ListItem
+        sx={{ paddingLeft: "6px" }}
+        button={true}
+        onClick={handleConfirmLogout}
+      >
         <ListItemButton>
           <ListItemIcon>
             <LogoutIcon />

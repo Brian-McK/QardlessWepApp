@@ -24,8 +24,6 @@ export default function CoursesTable() {
 
   const { user } = useAuth();
 
-  console.log(user);
-
   const {
     data = [],
     error,
@@ -58,10 +56,6 @@ export default function CoursesTable() {
         `${dayjs(params.row.expiry).format("DD/MM/YYYY")}`
     },
   ];
-
-  React.useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   return (
     <>
