@@ -5,9 +5,13 @@ import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import { useFormikContext } from "formik";
 import { TextField } from "@mui/material";
+import dayjs from "dayjs";
+import { Typography } from "@mui/material";
 
 export default function SelectCourseForm({ courses }) {
   const { handleChange, values, errors, touched } = useFormikContext();
+
+  console.log(courses);
 
   return (
     <>
@@ -42,7 +46,18 @@ export default function SelectCourseForm({ courses }) {
                 {courses.map((item) => {
                   return (
                     <MenuItem key={item.id} value={item.id}>
-                      {item.title}
+                      {`${item.title}`}
+                      <Typography
+                        variant="caption"
+                        sx={{mx: 1}}
+                      >
+                        {`Starts: ${dayjs(item.courseDate).format(
+                          "DD/MM/YYYY"
+                        )} `}
+                        {`Expires: ${dayjs(item.expiry).format(
+                          "DD/MM/YYYY"
+                        )} `}
+                      </Typography>
                     </MenuItem>
                   );
                 })}
