@@ -22,6 +22,7 @@ import {
 import { useAuth } from "../../providers/Auth.context";
 import { SharedSnackbarContext } from "../../providers/SharedSnackbar.context";
 import dayjs from "dayjs";
+import { useDialog } from "../../providers/Dialog.context";
 
 function CustomToolbar() {
   return (
@@ -35,6 +36,8 @@ function CustomToolbar() {
 
 export default function CertificatesTable() {
   const { user } = useAuth();
+
+  const showDialog = useDialog();
 
   const now = dayjs();
 
@@ -98,21 +101,24 @@ export default function CertificatesTable() {
     }
   }, [freezeResponse, unfreezeResponse]);
 
-  const openPdfHandler = React.useCallback(
-    (params) => () => {
-      const pdfWindow = window.open();
-
-      pdfWindow.location.href = params.row.pdfUrl;
-    },
-    []
-  );
-
   function getDaysTillExpiry(params) {
-
     const expiryDate = dayjs(params?.row?.course?.expiry);
 
     return `${expiryDate.diff(now, "day")} days`;
   }
+
+  const handleConfirmOpenPDF = async (params) => {
+    const confirmed = await showDialog({
+      title: `${"PDF"}`,
+      message: `${"Open PDF in new tab?"}`,
+    });
+    if (confirmed) {
+      const pdfWindow = window.open();
+      pdfWindow.location.href = params.row.pdfUrl;
+    } else {
+      console.log("canceled");
+    }
+  };
 
   const dataGridDataCols = [
     {
@@ -173,7 +179,7 @@ export default function CertificatesTable() {
         <GridActionsCellItem
           icon={<PictureAsPdfIcon sx={{ color: "#2c8535" }} />}
           label="pdf"
-          onClick={openPdfHandler(params)}
+          onClick={() => handleConfirmOpenPDF(params)}
         />,
         <GridActionsCellItem
           icon={<AcUnitIcon sx={{ color: "#229ee6" }} />}
@@ -188,8 +194,6 @@ export default function CertificatesTable() {
       ],
     },
   ];
-
-  React.useEffect(() => {}, [data]);
 
   return (
     <>

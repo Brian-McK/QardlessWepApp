@@ -11,28 +11,34 @@ import MainContent from "./dashboard/MainContent";
 import Courses from "./dashboard/courses/Courses";
 import AddCertificate from "./dashboard/certificates/AddCertificate";
 import ManageCertificates from "./dashboard/certificates/ManageCertificates";
+import DialogProvider from "./providers/Dialog.context";
 
 export default function App() {
   return (
     <SharedSnackbarProvider>
       <AuthProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="*" element={<NotFound />} />
-            <Route path="/unauthorized" element={<Unauthorized />} />
-            <Route element={<RequireAuth />}>
-              <Route path="/dashboard" element={<Dashboard />}>
-                <Route element={<MainContent />}>
-                  <Route path="courses" element={<Courses />} />
-                  <Route path="certificates" element={<AddCertificate />} />
-                  <Route path="manage-certificates" element={<ManageCertificates />} />
+        <DialogProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="*" element={<NotFound />} />
+              <Route path="/unauthorized" element={<Unauthorized />} />
+              <Route element={<RequireAuth />}>
+                <Route path="/dashboard" element={<Dashboard />}>
+                  <Route element={<MainContent />}>
+                    <Route path="courses" element={<Courses />} />
+                    <Route path="certificates" element={<AddCertificate />} />
+                    <Route
+                      path="manage-certificates"
+                      element={<ManageCertificates />}
+                    />
+                  </Route>
                 </Route>
               </Route>
-            </Route>
-          </Routes>
-        </BrowserRouter>
+            </Routes>
+          </BrowserRouter>
+        </DialogProvider>
       </AuthProvider>
     </SharedSnackbarProvider>
   );
