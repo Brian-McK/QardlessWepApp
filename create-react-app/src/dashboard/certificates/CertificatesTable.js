@@ -97,8 +97,6 @@ export default function CertificatesTable() {
     if (confirmed) {
       const pdfWindow = window.open();
       pdfWindow.location.href = params.row.pdfUrl;
-    } else {
-      console.log("canceled");
     }
   };
 
@@ -119,7 +117,6 @@ export default function CertificatesTable() {
   };
 
   const handleConfirmDelete = async (params) => {
-    console.log(params);
 
     const confirmed = await showDialog({
       title: `Certificate ${params.row.certNumber}`,

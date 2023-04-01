@@ -11,8 +11,6 @@ import { Typography } from "@mui/material";
 export default function SelectCourseForm({ courses }) {
   const { handleChange, values, errors, touched } = useFormikContext();
 
-  console.log(courses);
-
   return (
     <>
       <Grid container spacing={2}>

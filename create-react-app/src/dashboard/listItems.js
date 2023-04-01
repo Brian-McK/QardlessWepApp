@@ -25,8 +25,6 @@ export default function ListItems() {
     useLogoutEmployeeMutation();
 
   const handleConfirmLogout = async (e) => {
-    console.log("clicked");
-
     e.preventDefault();
 
     const userId = {
