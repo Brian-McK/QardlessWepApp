@@ -58,13 +58,6 @@ export default function CertificatesTable() {
   const [unfreezeCertificate, unfreezeResponse] =
     useUnfreezeCertificateMutation();
 
-  const deleteCertificateHandler = React.useCallback(
-    (id) => () => {
-      deleteCertificate(id);
-    },
-    [data]
-  );
-
   React.useLayoutEffect(() => {
     if (deleteResponse.isSuccess) {
       snackBarContext.openSnackbar(`Deleted Successfully!`);
@@ -110,8 +103,6 @@ export default function CertificatesTable() {
   };
 
   const handleConfirmFreezeUnfreeze = async (params) => {
-    console.log(params);
-
     const confirmed = await showDialog({
       title: params.row.isFrozen
         ? `Certificate ${params.row.certNumber} status: Frozen`
@@ -124,6 +115,18 @@ export default function CertificatesTable() {
       params.row.isFrozen
         ? unfreezeCertificate(params.row.id)
         : freezeCertificate(params.row.id);
+    }
+  };
+
+  const handleConfirmDelete = async (params) => {
+    console.log(params);
+
+    const confirmed = await showDialog({
+      title: `Certificate ${params.row.certNumber}`,
+      message: `Are you sure you want to delete the certificate ${params.row.certNumber}?`,
+    });
+    if (confirmed) {
+      deleteCertificate(params.id);
     }
   };
 
@@ -196,7 +199,7 @@ export default function CertificatesTable() {
         <GridActionsCellItem
           icon={<DeleteIcon sx={{ color: "#d44848" }} />}
           label="Delete"
-          onClick={deleteCertificateHandler(params.id)}
+          onClick={() => handleConfirmDelete(params)}
         />,
       ],
     },
