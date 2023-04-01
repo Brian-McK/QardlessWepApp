@@ -74,17 +74,6 @@ export default function CertificatesTable() {
     }
   }, [deleteResponse]);
 
-  const toggleFreezeCertificateHandler = React.useCallback(
-    (params) => () => {
-      if (params.row.isFrozen) {
-        unfreezeCertificate(params.row.id);
-      } else {
-        freezeCertificate(params.row.id);
-      }
-    },
-    [data]
-  );
-
   React.useLayoutEffect(() => {
     if (freezeResponse.isSuccess) {
       snackBarContext.openSnackbar(`Freeze certificate Successfully!`);
@@ -117,6 +106,24 @@ export default function CertificatesTable() {
       pdfWindow.location.href = params.row.pdfUrl;
     } else {
       console.log("canceled");
+    }
+  };
+
+  const handleConfirmFreezeUnfreeze = async (params) => {
+    console.log(params);
+
+    const confirmed = await showDialog({
+      title: params.row.isFrozen
+        ? `Certificate ${params.row.certNumber} status: Frozen`
+        : `Certificate ${params.row.certNumber} status: Active`,
+      message: params.row.isFrozen
+        ? `Would you like to unfreeze certificate ${params.row.certNumber}?`
+        : `Would you like to freeze certificate ${params.row.certNumber}?`,
+    });
+    if (confirmed) {
+      params.row.isFrozen
+        ? unfreezeCertificate(params.row.id)
+        : freezeCertificate(params.row.id);
     }
   };
 
@@ -184,7 +191,7 @@ export default function CertificatesTable() {
         <GridActionsCellItem
           icon={<AcUnitIcon sx={{ color: "#229ee6" }} />}
           label="Freeze"
-          onClick={toggleFreezeCertificateHandler(params)}
+          onClick={() => handleConfirmFreezeUnfreeze(params)}
         />,
         <GridActionsCellItem
           icon={<DeleteIcon sx={{ color: "#d44848" }} />}

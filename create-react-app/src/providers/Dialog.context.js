@@ -36,19 +36,19 @@ const DialogProvider = ({ children }) => {
     promiseInfo?.resolve(false);
     setPromiseInfo(undefined);
   };
-  
+
   return (
     <>
       <Dialog open={isOpen} onClose={handleCancel}>
         <DialogTitle>{options.title}</DialogTitle>
-        <DialogContent sx={{ minWidth: "400px" }}>
+        <DialogContent dividers sx={{ minWidth: "400px" }}>
           {options.message && (
             <DialogContentText>{options.message}</DialogContentText>
           )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCancel}>Cancel</Button>
-          <Button variant="contained" onClick={handleConfirm}>
+          <Button autoFocus color="primary" variant="contained" onClick={handleConfirm}>
             Confirm
           </Button>
         </DialogActions>
