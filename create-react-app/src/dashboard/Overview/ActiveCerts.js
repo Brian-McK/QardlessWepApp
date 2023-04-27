@@ -1,7 +1,4 @@
 import * as React from "react";
-import Link from "@mui/material/Link";
-import Typography from "@mui/material/Typography";
-import Title from "../Title";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import dayjs from "dayjs";
@@ -11,7 +8,6 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const now = dayjs();
 
 export default function ActiveCerts({ certData }) {
-  console.log(certData);
 
   const numActiveCerts = certData.filter((c) => c.isFrozen === false).length;
   const numFrozenCerts = certData.filter((c) => c.isFrozen === true).length;

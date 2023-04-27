@@ -5,6 +5,8 @@ import Paper from "@mui/material/Paper";
 import ActiveCerts from "./ActiveCerts";
 import { useGetAllCertificatesByBusinessIdQuery } from "../../api/services/certificates";
 import { useAuth } from "../../providers/Auth.context";
+import FlaggedIssues from "./FlaggedIssues";
+import { useGetFlaggedIssueByIdQuery, useGetFlaggedIssuesByBusinessIdQuery } from "../../api/services/flaggedIssues";
 
 export default function Overview() {
   const { user } = useAuth();
@@ -17,7 +19,13 @@ export default function Overview() {
     isSuccess: allCertsIsSuccess,
   } = useGetAllCertificatesByBusinessIdQuery(user.businessId);
 
-  console.log(allCerts);
+  const {
+    data: allFlaggedIssues = [],
+    error: allFlaggedIssuesError,
+    isLoading: allFlaggedIssuesIsLoading,
+    isError: allFlaggedIssuesIsError,
+    isSuccess: allFlaggedIssuesIsSuccess,
+  } = useGetFlaggedIssuesByBusinessIdQuery(user.businessId);
 
   return (
     <>
@@ -37,14 +45,17 @@ export default function Overview() {
           </Paper>
         </Grid>
         <Grid item xs={12} md={4}>
-          <Paper
+        <Paper
             sx={{
               p: 2,
               display: "flex",
               flexDirection: "column",
-              height: 240,
+              alignItems: "center",
+              height: 250,
             }}
-          ></Paper>
+          >
+            <FlaggedIssues flaggedData={allFlaggedIssues} />
+          </Paper>
         </Grid>
         <Grid item xs={12} md={4}>
           <Paper
