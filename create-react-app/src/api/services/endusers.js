@@ -5,6 +5,7 @@ export const endUsersApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://localhost:40443/",
   }),
+  tagTypes: ['endusers'],
   endpoints: (builder) => ({
     getEndUserById: builder.query({
       query: (id) => `endusers/${id}`,
@@ -12,4 +13,4 @@ export const endUsersApi = createApi({
   }),
 });
 
-export const { useGetEndUserById } = endUsersApi;
+export const { useLazyGetEndUserByIdQuery } = endUsersApi;

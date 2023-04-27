@@ -20,6 +20,7 @@ import {
   useGetFlaggedIssuesByBusinessIdQuery,
   useReadFlaggedIssueMutation,
 } from "../../api/services/flaggedIssues";
+import { useLazyGetEndUserByIdQuery } from "../../api/services/endusers";
 import { useAuth } from "../../providers/Auth.context";
 import { SharedSnackbarContext } from "../../providers/SharedSnackbar.context";
 import dayjs from "dayjs";
@@ -61,6 +62,8 @@ export default function FlaggedIssuesTable() {
   const [unfreezeCertificate, unfreezeResponse] =
     useUnfreezeCertificateMutation();
 
+  const [triggerGetEndUserLazyQuery, results] = useLazyGetEndUserByIdQuery();
+
   React.useLayoutEffect(() => {
     if (freezeResponse.isSuccess) {
       snackBarContext.openSnackbar(`Freeze certificate Successfully!`);
@@ -77,24 +80,28 @@ export default function FlaggedIssuesTable() {
     }
   }, [freezeResponse, unfreezeResponse]);
 
-  function getDaysTillExpiry(params) {
-    const expiryDate = dayjs(params?.row?.course?.expiry);
-
-    return `${expiryDate.diff(now, "day")} days`;
-  }
-
   const handleOpenContent = async (params) => {
+    triggerGetEndUserLazyQuery(params.row.certificate.endUserId);
 
-    console.log(params);
+    const endUser = results.data;
 
-    
+    if (results.isSuccess) {
+      const displayMessage = {
+        Name: endUser.name,
+        Email: endUser.email,
+        "Contact Number": endUser.contactNumber,
+        "Certificate Number": params.row.certificate.certNumber,
+        "Reported Date": params.row.createdAt,
+        "Reported Issue": params.row.content,
+      };
 
-    const confirmed = await showDialog({
-      title: `${"CONTENT"}`,
-      message: `${JSON.stringify(params, null, 2)}`,
-    });
-    if (confirmed) {
-      readFlaggedIssue(params.row.certificate.id);
+      const confirmed = await showDialog({
+        title: `Cert Number: ${params.row.certificate.certNumber} - Reported By: ${endUser.email}`,
+        message: JSON.stringify(displayMessage, null, 4),
+      });
+      if (confirmed) {
+        readFlaggedIssue(params.row.certificate.id);
+      }
     }
   };
 
