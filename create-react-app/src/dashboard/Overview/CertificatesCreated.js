@@ -63,8 +63,6 @@ export default function CertificatesCreated({ certData }) {
         data: certsCreatedPerMonth,
         backgroundColor: [
           "rgb(255, 99, 132)",
-          "rgb(54, 162, 235)",
-          "rgb(255, 205, 86)",
         ],
         hoverOffset: 5,
       },
