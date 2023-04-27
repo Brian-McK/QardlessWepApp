@@ -6,6 +6,7 @@ import ListItemText from "@mui/material/ListItemText";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SchoolIcon from "@mui/icons-material/School";
+import FlagIcon from '@mui/icons-material/Flag';
 import { Link } from "react-router-dom";
 import { ListItem } from "@mui/material";
 import { useCallback } from "react";
@@ -108,6 +109,21 @@ export default function ListItems() {
             <WorkspacePremiumIcon />
           </ListItemIcon>
           <ListItemText primary="Manage Certificates" />
+        </ListItemButton>
+      </ListItem>
+
+
+      <ListItem
+        sx={{ paddingLeft: "6px" }}
+        button={true}
+        component={Link}
+        to="/dashboard/flagged-issues"
+      >
+        <ListItemButton>
+          <ListItemIcon>
+            <FlagIcon />
+          </ListItemIcon>
+          <ListItemText primary="Flagged Issues" />
         </ListItemButton>
       </ListItem>
 

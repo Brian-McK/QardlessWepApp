@@ -33,6 +33,10 @@ export default function App() {
                       path="manage-certificates"
                       element={<ManageCertificates />}
                     />
+                     <Route
+                      path="flagged-issues"
+                      element={<FlaggedIssues />}
+                    />
                   </Route>
                 </Route>
               </Route>
