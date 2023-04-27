@@ -19,6 +19,10 @@ export const flaggedIssuesApi = createApi({
       query: (id) => `flaggedIssues/${id}`,
       providesTags: ["flaggedIssues"],
     }),
+    getFlaggedIssuesByBusinessId: builder.query({
+      query: (id) => `flaggedIssues/businesses/${id}`,
+      providesTags: ["flaggedIssues"],
+    }),
     deleteFlaggedIssue: builder.mutation({
       query: (id) => ({
         url: `flaggedIssues/${id}`,
@@ -32,5 +36,6 @@ export const flaggedIssuesApi = createApi({
 export const {
     useGetAllFlaggedIssuesQuery,
     useGetFlaggedIssueByIdQuery,
+    useGetFlaggedIssuesByBusinessIdQuery,
     useDeleteFlaggedIssueMutation
 } = flaggedIssuesApi;
