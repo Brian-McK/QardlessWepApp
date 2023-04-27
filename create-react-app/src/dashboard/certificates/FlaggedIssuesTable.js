@@ -16,7 +16,10 @@ import {
   useFreezeCertificateMutation,
   useUnfreezeCertificateMutation,
 } from "../../api/services/certificates";
-import { useGetFlaggedIssuesByBusinessIdQuery } from "../../api/services/flaggedIssues";
+import {
+  useGetFlaggedIssuesByBusinessIdQuery,
+  useReadFlaggedIssueMutation,
+} from "../../api/services/flaggedIssues";
 import { useAuth } from "../../providers/Auth.context";
 import { SharedSnackbarContext } from "../../providers/SharedSnackbar.context";
 import dayjs from "dayjs";
@@ -47,8 +50,11 @@ export default function FlaggedIssuesTable() {
     isLoading,
     isError,
     isSuccess,
-    refetch
+    refetch,
   } = useGetFlaggedIssuesByBusinessIdQuery(user.businessId);
+
+  const [readFlaggedIssue, readFlaggedIssueResponse] =
+    useReadFlaggedIssueMutation();
 
   const [freezeCertificate, freezeResponse] = useFreezeCertificateMutation();
 
@@ -77,14 +83,18 @@ export default function FlaggedIssuesTable() {
     return `${expiryDate.diff(now, "day")} days`;
   }
 
-  const handleConfirmOpenPDF = async (params) => {
+  const handleOpenContent = async (params) => {
+
+    console.log(params);
+
+    
+
     const confirmed = await showDialog({
-      title: `${"PDF"}`,
-      message: `${"Open PDF in new tab?"}`,
+      title: `${"CONTENT"}`,
+      message: `${JSON.stringify(params, null, 2)}`,
     });
     if (confirmed) {
-      const pdfWindow = window.open();
-      pdfWindow.location.href = params.row.pdfUrl;
+      readFlaggedIssue(params.row.certificate.id);
     }
   };
 
@@ -189,7 +199,7 @@ export default function FlaggedIssuesTable() {
         <GridActionsCellItem
           icon={<VisibilityIcon sx={{ color: "#2c8535" }} />}
           label="view"
-          onClick={() => handleConfirmOpenPDF(params)}
+          onClick={() => handleOpenContent(params)}
         />,
         <GridActionsCellItem
           icon={<AcUnitIcon sx={{ color: "#229ee6" }} />}
