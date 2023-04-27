@@ -29,7 +29,8 @@ export default function Overview() {
               p: 2,
               display: "flex",
               flexDirection: "column",
-              height: 240,
+              alignItems: "center",
+              height: 250,
             }}
           >
             <ActiveCerts certData={allCerts} />

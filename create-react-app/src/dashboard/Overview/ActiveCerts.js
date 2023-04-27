@@ -1,31 +1,43 @@
 import * as React from "react";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
-import Title from "../Title"; 
+import Title from "../Title";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
+import dayjs from "dayjs";
 
-function preventDefault(event) {
-  event.preventDefault();
-}
+ChartJS.register(ArcElement, Tooltip, Legend);
+
+const now = dayjs();
 
 export default function ActiveCerts({ certData }) {
-  const activeCerts = certData.filter((c) => c.isFrozen === false).length;
+  console.log(certData);
 
-  console.log(activeCerts);
+  const numActiveCerts = certData.filter((c) => c.isFrozen === false).length;
+  const numFrozenCerts = certData.filter((c) => c.isFrozen === true).length;
+  const numExpiredCerts = certData.filter(
+    (c) => dayjs(c.course.expiry) > now
+  ).length;
+
+  const doughnutData = {
+    labels: ["Active", "Frozen", "Expired"],
+    datasets: [
+      {
+        label: "Certificates",
+        data: [numActiveCerts, numFrozenCerts, numExpiredCerts],
+        backgroundColor: [
+          "rgb(255, 99, 132)",
+          "rgb(54, 162, 235)",
+          "rgb(255, 205, 86)",
+        ],
+        hoverOffset: 5,
+      },
+    ],
+  };
 
   return (
     <>
-      <Title>Total Active Certs</Title>
-      <Typography component="p" variant="h4">
-        {certData.length}
-      </Typography>
-      <Typography color="text.secondary" sx={{ flex: 1 }}>
-        on 15 March, 2019
-      </Typography>
-      <div>
-        <Link color="primary" href="certificates">
-          View certificates
-        </Link>
-      </div>
+      <Doughnut data={doughnutData} />
     </>
   );
 }
