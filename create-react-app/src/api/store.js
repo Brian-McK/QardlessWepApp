@@ -5,6 +5,7 @@ import { employeesApi } from "./services/employees";
 import { coursesApi } from "./services/courses";
 import { loginUsersApi } from "./services/login";
 import { flaggedIssuesApi } from "./services/flaggedIssues";
+import { endUsersApi } from "./services/endusers";
 
 export const store = configureStore({
   reducer: {
@@ -12,7 +13,8 @@ export const store = configureStore({
     [certificatesApi.reducerPath]: certificatesApi.reducer,
     [coursesApi.reducerPath]: coursesApi.reducer,
     [loginUsersApi.reducerPath]: loginUsersApi.reducer,
-    [flaggedIssuesApi.reducerPath]: flaggedIssuesApi.reducer
+    [flaggedIssuesApi.reducerPath]: flaggedIssuesApi.reducer,
+    [endUsersApi.reducerPath]: endUsersApi.reducer
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
@@ -22,7 +24,8 @@ export const store = configureStore({
       .concat(certificatesApi.middleware)
       .concat(coursesApi.middleware)
       .concat(loginUsersApi.middleware)
-      .concat(flaggedIssuesApi.middleware),
+      .concat(flaggedIssuesApi.middleware)
+      .concat(endUsersApi.middleware),
 });
 
 setupListeners(store.dispatch);
