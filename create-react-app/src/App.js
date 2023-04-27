@@ -13,6 +13,7 @@ import AddCertificate from "./dashboard/certificates/AddCertificate";
 import ManageCertificates from "./dashboard/certificates/ManageCertificates";
 import FlaggedIssues from "./dashboard/certificates/FlaggedIssues";
 import DialogProvider from "./providers/Dialog.context";
+import Overview from "./dashboard/Overview/Overview";
 
 export default function App() {
   return (
@@ -28,16 +29,14 @@ export default function App() {
               <Route element={<RequireAuth />}>
                 <Route path="/dashboard" element={<Dashboard />}>
                   <Route element={<MainContent />}>
+                    <Route path="overview" element={<Overview />} />
                     <Route path="courses" element={<Courses />} />
                     <Route path="certificates" element={<AddCertificate />} />
                     <Route
                       path="manage-certificates"
                       element={<ManageCertificates />}
                     />
-                     <Route
-                      path="flagged-issues"
-                      element={<FlaggedIssues />}
-                    />
+                    <Route path="flagged-issues" element={<FlaggedIssues />} />
                   </Route>
                 </Route>
               </Route>
