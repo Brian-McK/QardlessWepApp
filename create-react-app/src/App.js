@@ -11,6 +11,7 @@ import MainContent from "./dashboard/MainContent";
 import Courses from "./dashboard/courses/Courses";
 import AddCertificate from "./dashboard/certificates/AddCertificate";
 import ManageCertificates from "./dashboard/certificates/ManageCertificates";
+import FlaggedIssues from "./dashboard/certificates/FlaggedIssues";
 import DialogProvider from "./providers/Dialog.context";
 
 export default function App() {
@@ -32,6 +33,10 @@ export default function App() {
                     <Route
                       path="manage-certificates"
                       element={<ManageCertificates />}
+                    />
+                     <Route
+                      path="flagged-issues"
+                      element={<FlaggedIssues />}
                     />
                   </Route>
                 </Route>
