@@ -7,10 +7,10 @@ import { useGetAllCertificatesByBusinessIdQuery } from "../../api/services/certi
 import { useAuth } from "../../providers/Auth.context";
 import FlaggedIssues from "./FlaggedIssues";
 import {
-  useGetFlaggedIssueByIdQuery,
   useGetFlaggedIssuesByBusinessIdQuery,
 } from "../../api/services/flaggedIssues";
 import CertificatesCreated from "./CertificatesCreated";
+import CoursesPopularity from "./CoursesPopularity";
 
 export default function Overview() {
   const { user } = useAuth();
@@ -61,7 +61,10 @@ export default function Overview() {
             <FlaggedIssues flaggedData={allFlaggedIssues} />
           </Paper>
         </Grid>
-        <Grid item xs={12} md={4}>
+
+
+        
+        <Grid item xs={12} md={6}>
           <Paper
             sx={{
               p: 2,
@@ -74,6 +77,22 @@ export default function Overview() {
             <CertificatesCreated certData={allCerts} />
           </Paper>
         </Grid>
+
+        <Grid item xs={12} md={6}>
+          <Paper
+            sx={{
+              p: 2,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              height: 250,
+            }}
+          >
+            <CoursesPopularity certData={allCerts} />
+          </Paper>
+        </Grid>
+
+       
       </Grid>
     </>
   );

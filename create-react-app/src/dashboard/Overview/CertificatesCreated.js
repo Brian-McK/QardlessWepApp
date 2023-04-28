@@ -55,7 +55,7 @@ export default function CertificatesCreated({ certData }) {
     certsCreatedPerMonth.push(countOccurrences(currentYearCerts, index));
   });
 
-  const doughnutData = {
+  const barchartData = {
     labels: labels,
     datasets: [
       {
@@ -71,7 +71,7 @@ export default function CertificatesCreated({ certData }) {
 
   return (
     <>
-      <Bar data={doughnutData} />
+      <Bar data={barchartData} />
     </>
   );
 }
