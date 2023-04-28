@@ -11,6 +11,7 @@ import {
 } from "../../api/services/flaggedIssues";
 import CertificatesCreated from "./CertificatesCreated";
 import CoursesPopularity from "./CoursesPopularity";
+import ScansByLocation from "./ScansByLocation";
 
 export default function Overview() {
   const { user } = useAuth();
@@ -62,7 +63,19 @@ export default function Overview() {
           </Paper>
         </Grid>
 
-
+        <Grid item xs={12} md={4}>
+          <Paper
+            sx={{
+              p: 2,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              height: 250,
+            }}
+          >
+            <ScansByLocation/>
+          </Paper>
+        </Grid>
         
         <Grid item xs={12} md={6}>
           <Paper
@@ -71,7 +84,7 @@ export default function Overview() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              height: 250,
+              height: 300,
             }}
           >
             <CertificatesCreated certData={allCerts} />
@@ -85,7 +98,7 @@ export default function Overview() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              height: 250,
+              height: 300,
             }}
           >
             <CoursesPopularity certData={allCerts} />
