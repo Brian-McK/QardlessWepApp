@@ -2,7 +2,7 @@ import * as React from "react";
 import Dashboard from "../src/dashboard/Dashboard";
 import { SharedSnackbarProvider } from "./providers/SharedSnackbar.context";
 import Login from "./dashboard/Login/Login";
-import { Routes, Route, Switch, BrowserRouter } from "react-router-dom";
+import { Routes, Route, Switch, BrowserRouter, Navigate } from "react-router-dom";
 import { AuthProvider } from "./providers/Auth.context";
 import NotFound from "./generics/NotFound";
 import Unauthorized from "./generics/Unauthorized";
@@ -29,6 +29,7 @@ export default function App() {
               <Route element={<RequireAuth />}>
                 <Route path="/dashboard" element={<Dashboard />}>
                   <Route element={<MainContent />}>
+                    <Route index element={<Navigate to="overview" />} />
                     <Route path="overview" element={<Overview />} />
                     <Route path="courses" element={<Courses />} />
                     <Route path="certificates" element={<AddCertificate />} />
