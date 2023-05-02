@@ -51,6 +51,8 @@ export default function CertificatesTable() {
     isSuccess,
   } = useGetAllCertificatesByBusinessIdQuery(user.businessId);
 
+  console.log(data);
+
   const [deleteCertificate, deleteResponse] = useDeleteCertificateMutation();
 
   const [freezeCertificate, freezeResponse] = useFreezeCertificateMutation();
@@ -132,6 +134,18 @@ export default function CertificatesTable() {
       field: "certNumber",
       headerName: "Cert Number",
       description: "The certificate number",
+      width: 120,
+    },
+    {
+      field: "endUserName",
+      headerName: "Name",
+      description: "The certificate holders name",
+      width: 150,
+    },
+    {
+      field: "endUserEmail",
+      headerName: "Email",
+      description: "The certificate holders email address",
       width: 150,
     },
     {
@@ -153,7 +167,7 @@ export default function CertificatesTable() {
       field: "expiry",
       headerName: "Course Expiry",
       description: "The date of when the course expires",
-      width: 150,
+      width: 100,
       valueGetter: (params) =>
         `${dayjs(params.row.course.expiry).format("DD/MM/YYYY")}`,
     },
@@ -161,7 +175,7 @@ export default function CertificatesTable() {
       field: "expiresDays",
       headerName: "Expires in",
       description: "The number of days in which the certificate will expire",
-      width: 150,
+      width: 100,
       valueGetter: getDaysTillExpiry,
     },
     {
