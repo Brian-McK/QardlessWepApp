@@ -5,6 +5,28 @@ import {
   GridToolbarExport,
   GridCsvExportOptions,
 } from "@mui/x-data-grid";
+import { Typography, Box } from "@mui/material";
+
+function DataGridTitle() {
+  return (
+    <Box
+      sx={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "12px",
+      }}
+    >
+      <Typography
+        sx={{ color: "#474747", fontWeight: "bold" }}
+        variant="caption"
+      >
+        Top scan locations
+      </Typography>
+    </Box>
+  );
+}
 
 export default function ScansByLocation() {
   const dummyScanLocationData = {
@@ -45,13 +67,13 @@ export default function ScansByLocation() {
       field: "county",
       headerName: "County",
       description: "The county",
-      flex: 1
+      flex: 1,
     },
     {
       field: "scans",
       headerName: "Scans",
       description: "The number of scans for the county",
-      flex: 1
+      flex: 1,
     },
   ];
 
@@ -62,7 +84,7 @@ export default function ScansByLocation() {
   return (
     <>
       <DataGrid
-      rowHeight={25}
+        rowHeight={25}
         disableExtendRowFullWidth={true}
         rows={countyDataArray}
         columns={dataGridDataCols}
@@ -71,8 +93,9 @@ export default function ScansByLocation() {
         hideFooterSelectedRowCount
         hideFooter
         disableSelectionOnClick
+        components={{ Toolbar: DataGridTitle }}
         sx={{
-           width: "100%"
+          width: "100%",
         }}
       />
     </>
