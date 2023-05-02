@@ -55,9 +55,28 @@ export default function CoursesPopularity({ certData }) {
     ],
   };
 
+  const options = {
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "Courses",
+          colour: "black",
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: "Number of certificates assigned",
+          colour: "black",
+        },
+      },
+    },
+  };
+
   return (
     <>
-      <Bar data={barchartData} />
+      <Bar data={barchartData} options={options} />
     </>
   );
 }

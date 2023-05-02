@@ -61,17 +61,34 @@ export default function CertificatesCreated({ certData }) {
       {
         label: `Certificates Created in ${currentYear}`,
         data: certsCreatedPerMonth,
-        backgroundColor: [
-          "rgb(255, 99, 132)",
-        ],
+        backgroundColor: ["rgb(255, 99, 132)"],
         hoverOffset: 5,
       },
     ],
   };
 
+  const options = {
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "Months",
+          colour: "black",
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: "Number of certs",
+          colour: "black",
+        },
+      },
+    },
+  };
+
   return (
     <>
-      <Bar data={barchartData} />
+      <Bar data={barchartData} options={options} />
     </>
   );
 }
