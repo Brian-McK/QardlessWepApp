@@ -43,7 +43,7 @@ export default function Overview() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              height: 250,
+              height: 300,
             }}
           >
             <ActiveCerts certData={allCerts} />
@@ -56,7 +56,7 @@ export default function Overview() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              height: 250,
+              height: 300,
             }}
           >
             <FlaggedIssues flaggedData={allFlaggedIssues} />
@@ -70,7 +70,7 @@ export default function Overview() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              height: 250,
+              height: 300,
             }}
           >
             <ScansByLocation/>

@@ -1,14 +1,13 @@
 import * as React from "react";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import dayjs from "dayjs";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
 const now = dayjs();
 
 export default function ActiveCerts({ certData }) {
-
   const numActiveCerts = certData.filter((c) => c.isFrozen === false).length;
   const numFrozenCerts = certData.filter((c) => c.isFrozen === true).length;
   const numExpiredCerts = certData.filter(
@@ -31,9 +30,20 @@ export default function ActiveCerts({ certData }) {
     ],
   };
 
+  const options = {
+    responsive: true,
+    plugins: {
+      title: {
+        display: true,
+        text: "Certificates by status",
+        position: "top"
+      },
+    },
+  };
+
   return (
     <>
-      <Doughnut data={doughnutData} />
+      <Doughnut data={doughnutData} options={options} />
     </>
   );
 }
