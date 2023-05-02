@@ -25,9 +25,20 @@ export default function FlaggedIssues({ flaggedData }) {
     ],
   };
 
+  const options = {
+    responsive: true,
+    plugins: {
+      title: {
+        display: true,
+        text: "Flagged Issues by read status",
+        position: "top"
+      },
+    },
+  };
+
   return (
     <>
-      <Doughnut data={doughnutData} />
+      <Doughnut data={doughnutData} options={options} />
     </>
   );
 }
